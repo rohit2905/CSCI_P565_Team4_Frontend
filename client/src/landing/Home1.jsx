@@ -12,7 +12,7 @@ const Home1 = () => {
         </div>
         <div className="home-text-section">
           <h1 className="primary-heading">
-            <b>Your Trusted Delivery Partner</b>
+            <b>Your Trusted Delivery Partner Test</b>
           </h1>
           <p className="primary-text">
             Experience Seamless Global Deliveries With Our One-Stop-Shop Delivery Management System, Where Every Package Finds Its Perfect Journey!

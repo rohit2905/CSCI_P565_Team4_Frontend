@@ -6,7 +6,7 @@ COPY package*.json .
 
 RUN npm install --legacy-peer-deps
 
-COPY ./src ./src
+COPY . .
 
 EXPOSE 5173
 

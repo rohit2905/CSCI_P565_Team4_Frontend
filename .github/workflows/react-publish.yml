@@ -31,13 +31,13 @@ jobs:
       - name: Install dependencies
         run: |
           npm install --legacy-peer-deps
-        working-directory: ../client/
+        working-directory: client/
       # build and test the apps
       - name: build
         run: |
           npm run build
           npm test
-        working-directory: ../client/
+        working-directory: client/
           
   push_to_Docker_Hub:
 

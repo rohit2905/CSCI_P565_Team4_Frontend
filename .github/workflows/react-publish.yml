@@ -31,11 +31,13 @@ jobs:
       - name: Install dependencies
         run: |
           npm install --legacy-peer-deps
+        working-directory: ../client/
       # build and test the apps
       - name: build
         run: |
           npm run build
           npm test
+        working-directory: ../client/
           
   push_to_Docker_Hub:
 
@@ -79,6 +81,6 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID}} 
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}} 
           vercel-project-id: ${{ secrets.PROJECT_ID}}
           vercel-args: "--prod"

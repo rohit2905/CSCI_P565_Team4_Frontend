@@ -82,6 +82,7 @@ const Order = () => {
 
 	}
 
+	// TODO: fetch data from DB instead of static carriers
 	const handleQuotations = async (e) => {
 		make_visible('Quotations');
 		var distance = Math.abs(Zip_f - Zip_t);

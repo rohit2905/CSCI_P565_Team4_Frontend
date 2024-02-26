@@ -102,6 +102,8 @@ export const newpassword = async ({password,token_rs} = {}) => {
 	}
 };
 
+
+// TODO: Ordering api's
 export const OrderDetails = async ({TrackingID,Address_f,Address_t,Cost,Carrier,Size,Weight,PriorityStatus,PaymentStatus,Customer} = {}) => {
 	console.log(PriorityStatus,TrackingID);
 	const Order = {TrackingID,Address_f,Address_t,Cost,Carrier,Size,Weight,PriorityStatus,PaymentStatus,Customer};
@@ -254,6 +256,8 @@ export const adduseraccess = async ({addemail, adduserType} = {}) => {
 	}
 };
 
+
+// TODO: Kirthivasan; endpoints for chat
 
 export const allusers = async ({search} = {}) => {
 	

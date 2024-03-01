@@ -14,7 +14,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Reset from "./pages/Reset";
 import Newpass from "./pages/Newpassword";
-import CustomerHome from "./pages/usertype/Customer/Customer";
+import CustomerHome from "./pages/usertype/Customer/CustomerHome";
 import DriverHome from "./pages/usertype/Driver/DriverHome";
 import ManagerHome from "./pages/usertype/Manager/ManagerHome";
 import Order from "./pages/Order";

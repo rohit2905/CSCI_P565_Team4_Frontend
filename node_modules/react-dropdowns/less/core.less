@@ -1,0 +1,30 @@
+
+// base
+
+// The dropdown wrapper (div)
+.Dropdown {
+  box-sizing: border-box;
+  position: relative;
+
+  // Remove the outline when :focus is triggered
+  > a {
+    outline: 0;
+  }
+}
+
+// Prevent the focus on the dropdown toggle when closing dropdowns
+.Dropdown-toggle:focus {
+  outline: 0;
+}
+
+// Backdrop to catch body clicks on mobile, etc.
+//
+// TODO: implement BS3 .dropdown-backdrop feature
+.Dropdown-backdrop {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: (@zindex-dropdown - 10);
+}

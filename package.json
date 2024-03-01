@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "react-addons-clicked-away-mixin": "^0.1.2",
+    "react-dropdown-select": "^4.11.2",
+    "react-dropdowns": "^0.2.1",
+    "react-select": "^5.8.0"
+  }
+}

@@ -1,0 +1,38 @@
+/**
+ * React Dropdown
+ * ==============
+ */
+
+// Variables
+// --------------------
+
+// base
+@dropdown-bg:                                     #FFFFFF;
+@dropdown-border-color:                           rgba(0,0,0,.15);
+@dropdown-fallback-border-color:                  #CCCCCC; // **for IE8**.
+@dropdown-cursor-disabled:                        not-allowed;
+@dropdown-divider-bg:                             #E5E5E5;
+@dropdown-font-size:                              14px;
+@dropdown-link-color:                             #333333;
+@dropdown-link-hover-bg:                          #F5F5F5;
+@dropdown-link-hover-color:                       #262626;
+@dropdown-link-active-color:                      #FFFFFF;
+@dropdown-link-active-bg:                         #337AB7;
+@dropdown-link-disabled-color:                    #777777;
+@dropdown-line-height:                            1.42857143; // ~20px
+@dropdown-line-height-computed:                   floor((@dropdown-font-size * @dropdown-line-height)); // ~20px
+
+// menu options
+
+// header options
+@dropdown-header-color:                           #777777;
+@dropdown-header-font-size:                       12px;
+
+// z-index options
+@zindex-dropdown:                                 1000px;
+
+// imports
+@import "core.less";
+@import "menu.less";
+@import "header.less";
+@import "submenu.less";

@@ -78,7 +78,6 @@ export class OrderTracking extends React.Component {
                 <TextField             
                     sx={{mt:1}}
 					size="small"
-					// variant="standard"
 					className="form-control"
 					label="Enter Tracking Number"
 					value={this.state.trackingID}
@@ -87,6 +86,7 @@ export class OrderTracking extends React.Component {
                 
                 <Button
                     sx={{mt:1}}
+                    size="small"
 					variant="contained"
                     className="form-control"
 					disabled={!this.state.trackingID}
@@ -163,8 +163,8 @@ export class OrderTracking extends React.Component {
 
                     <div style={{align:"center", visibility: `${(!this.state.location)? "hidden" : "visible"}`}}>
                     <div className='google-map' >
-                    <h5 style={{color: '#80ffff',display: 'inline-block'}}>Package is at: </h5> 
-                    <h5 style={{color: 'White',display: 'inline-block'}}>{this.state.location}</h5> 
+                    <h5 style={{color: '#000000',display: 'inline-block'}}><b>Package Location:&nbsp;</b></h5> 
+                    <h5 style={{display: 'inline-block'}}>{this.state.location}</h5> 
                         <Map  
                             key={this.state.lat && this.state.lng}
                             google={this.props.google}

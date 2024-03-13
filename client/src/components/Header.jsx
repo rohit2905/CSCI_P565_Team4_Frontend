@@ -88,7 +88,7 @@ const Header = () => {
         </>
     ) : (
         <>
-           {/* <li className="nav-item">
+            <li className="nav-item">
                 <Link className="nav-link" style={linkStyles} to="/map">
                     Map
                 </Link>
@@ -112,7 +112,7 @@ const Header = () => {
                 <Link className="nav-link" style={linkStyles} to={userhome}>
                     My Orders
                 </Link>
-    </li> */}
+    </li>
             <li className="nav-item">
                 <span
                     className="nav-link"

@@ -172,6 +172,7 @@ const Order = () => {
 		// e.preventDefault();
 		var PaymentStatus = 'Paid';
 		var Customer = useremail || Email_f;
+		var OrderStatus = "order placed";
 		// console.log(`email is ${Customer}`);
 		const res = await OrderDetails({ TrackingID, Address_f, Address_t, Cost, Carrier, Size, Weight, PriorityStatus, PaymentStatus, Customer });
 		const res2 = await orderemail({ Customer, Cost, TrackingID });
@@ -223,443 +224,323 @@ const Order = () => {
 
 	let navigate = useNavigate();
 	return (
-
-		<
-        div className="wrapper" >
-			<
-        div className="one" > { /* <Grow in> */} <
-        div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-3" >
-					<
-        div className="text-center mb-2 alert " >
-						<
-        label htmlFor=""
-							className="h6" >
-							From Address <
-        /label> <
-        /div> <
-        div className="form-group" >
-								<
-									TextField sx={
-										{ mb: 1 }}
-									size="small"
-									variant="standard"
-									className="form-control"
-									label="Street"
-									value={Street_f}
-									onChange={
-										(e) => setStreet_f(e.target.value)}
-								/> <
-        /div> <
-        div className="form-group" >
-									<
-										TextField sx={
-											{ mb: 1 }}
-										size="small"
-										variant="standard"
-										className="form-control"
-										label="Apt No."
-										value={Apt_f}
-										onChange={
-											(e) => setApt_f(e.target.value)}
-									/> <
-        /div> <
-        div className="form-group" >
-										<
-											TextField sx={
-												{ mb: 1 }}
-											size="small"
-											variant="standard"
-											className="form-control"
-											label="City"
-											value={City_f}
-											onChange={
-												(e) => setCity_f(e.target.value)}
-										/> <
-        /div> <
-        div className="form-group" >
-											<
-												TextField sx={
-													{ mb: 1 }}
-												size="small"
-												variant="standard"
-												className="form-control"
-												label="State"
-												value={State_f}
-												onChange={
-													(e) => setState_f(e.target.value)}
-											/> <
-        /div> <
-        div className="form-group" >
-												<
-													TextField sx={
-														{ mb: 1 }}
-													size="small"
-													variant="standard"
-													// className="form-control"
-													label="Zip Code"
-													value={Zip_f}
-													onChange={
-														(e) => setZip_f(e.target.value)}
-												/> <
-													TextField sx={
-														{ mb: 1 }}
-													size="small"
-													variant="standard"
-													style={
-														{ visibility: email_show }}
-													// className="form-control"
-													label="Email"
-													// value={Email_f}
-													onChange={
-														(e) => setEmail_f(e.target.value)}
-												/> <
-        /div> <
-        /div> { /* </Grow> */} <
-        /div>
-
-												<
-        div className="two" > { /* <Grow in> */} <
-        div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-3" >
-														<
-        div className="text-center mb-2 alert " >
-															<
-        label htmlFor=""
-																className="h6" >
-																To Address <
-        /label> <
-        /div> <
-        div className="form-group" >
-																	<
-																		TextField sx={
-																			{ mb: 1 }}
-																		size="small"
-																		variant="standard"
-																		className="form-control"
-																		label="Street"
-																		value={Street_t}
-																		onChange={
-																			(e) => setStreet_t(e.target.value)}
-																	/> <
-        /div> <
-        div className="form-group" >
-																		<
-																			TextField sx={
-																				{ mb: 1 }}
-																			size="small"
-																			variant="standard"
-																			className="form-control"
-																			label="Apt No."
-																			value={Apt_t}
-																			onChange={
-																				(e) => setApt_t(e.target.value)}
-																		/> <
-        /div> <
-        div className="form-group" >
-																			<
-																				TextField sx={
-																					{ mb: 1 }}
-																				size="small"
-																				variant="standard"
-																				className="form-control"
-																				label="City"
-																				value={City_t}
-																				onChange={
-																					(e) => setCity_t(e.target.value)}
-																			/> <
-        /div> <
-        div className="form-group" >
-																				<
-																					TextField sx={
-																						{ mb: 1 }}
-																					size="small"
-																					variant="standard"
-																					className="form-control"
-																					label="State"
-																					value={State_t}
-																					onChange={
-																						(e) => setState_t(e.target.value)}
-																				/> <
-        /div> <
-        div className="form-group" >
-																					<
-																						TextField sx={
-																							{ mb: 1 }}
-																						size="small"
-																						variant="standard"
-																						className="form-control"
-																						label="Zip Code"
-																						value={Zip_t}
-																						onChange={
-																							(e) => setZip_t(e.target.value)}
-																					/> <
-        /div>
-
-																					<
-        /div> { /* </Grow> */} <
-        /div> { /* <Grow in> */} <
-        div className="three" >
-																						<
-        div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-3" >
-																							<
-        div className="text-center mb-2 alert " >
-																								<
-        label htmlFor=""
-																									className="h6" >
-																									Delivery Product Details <
-        /label> <
-        /div>
-
-																									<
-        div >
-																										<
-        FormControl variant="standard"
-																											sx={
-																												{ mb: 1 }}
-																											fullWidth >
-																											<
-        InputLabel id="demo-simple-select-label" > Size < /InputLabel> <
-        Select labelId="demo-simple-select-label"
-																													id="demo-simple-select"
-																													value={Size}
-																													label="Size"
-																													type="text"
-																													onChange={
-																														(e) => setSize(e.target.value)} >
-																													<
-        MenuItem value={'Small'} > Small < /MenuItem> <
-        MenuItem value={'Medium'} > Medium < /MenuItem> <
-        MenuItem value={'Large'} > Large < /MenuItem> <
-        /Select> <
-        /FormControl> <
-        /div>
-
-																																<
-        div className="form-group" >
-																																	<
-																																		TextField sx={
-																																			{ mb: 1 }}
-																																		size="small"
-																																		variant="standard"
-																																		className="form-control"
-																																		label="Weight (in lbs)"
-																																		value={Weight}
-																																		onChange={
-																																			(e) => setWeight(e.target.value)}
-																																	/> <
-        /div> <
-        div >
-																																		<
-        FormControl variant="standard"
-																																			sx={
-																																				{ mb: 1 }}
-																																			fullWidth >
-																																			<
-        InputLabel id="demo-simple-select-label" > Priority < /InputLabel> <
-        Select labelId="demo-simple-select-label"
-																																					id="demo-simple-select"
-																																					value={Priority}
-																																					label="Size"
-																																					type="text"
-																																					onChange={
-																																						(e) => setPriority(e.target.value)} >
-																																					<
-        MenuItem value={1} > Normal < /MenuItem> <
-        MenuItem value={1.5} > Priority < /MenuItem> <
-        /Select> <
-        /FormControl> <
-        /div> <
-        div className="text-center mt-4" >
-																																								<
-        Button variant="contained"
-																																									disabled={!Street_f || !City_f || !State_f || !Zip_f ||
-																																										!Street_t || !City_t || !State_t || !Zip_t ||
-																																										!Size || !Weight || !Priority || (!user && !Email_f)
-																																									}
-																																									onClick={handleQuotations} >
-																																									Get Quotations <
-        /Button> <
-        /div> { /* </Grow> */} <
-        /div> <
-        /div>
-
-																																									<
-        div id='Quotations'
-																																										style={
-																																											{ visibility: 'hidden' }}
-																																										className="four" > { /* <Grow in> */} <
-        div className="container2 mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-3" >
-																																											<
-        div className="text-center mb-2 alert " >
-																																												<
-        label htmlFor=""
-																																													className="h6" >
-																																													Quotations <
-        /label> <
-        /div> <
-        div className="wrapper2" >
-																																														<
-        div className="one1" >
-																																															<
-        div className="text-center mb-2 alert " >
-																																																<
-        label htmlFor=""
-																																																	className="h8" >
-																																																	FedEx {PriorityStatus} <
-        /label> <
-        /div> <
-        /div> <
-        div className="two1" >
-																																																		<
-        div className="text-center mb-2 alert " >
-																																																			<
-        label htmlFor=""
-																																																				className="h8" > {Fedex} <
-        /label> <
-        /div> <
-        /div> <
-        div className="three1" >
-																																																					<
-        div className="text-center mt-4" >
-																																																						<
-        Button variant="contained"
-																																																							disabled={false}
-																																																							onClick={handleFedex} >
-																																																							select <
-        /Button> <
-        /div> <
-        /div> <
-        /div>
+		<div>
+			<div className="grid-wrapper">
+			<div className="grid-item" style={{ padding: '20px', maxWidth: '400px', margin: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderRadius: '8px', backgroundColor: '#fff' }}>
+				<div>
+					<div className="text-center mb-2 alert" style={{ marginBottom: '16px' }}>
+						<label htmlFor="" className="h6" style={{ fontWeight: 'bold' }}>
+							From Address
+						</label>
+					</div>
+					<div className="form-group-order" style={{ marginBottom: '16px' }}>
+						<TextField
+							sx={{ mb: 1, width: '100%' }}
+							size="small"
+							variant="outlined"
+							className="form-control-order"
+							label="Street"
+							value={Street_f}
+							onChange={(e) => setStreet_f(e.target.value)}
+						/>
+					</div>
+					<div className="form-group-order" style={{ marginBottom: '16px' }}>
+						<TextField
+							sx={{ mb: 1, width: '100%' }}
+							size="small"
+							variant="outlined"
+							className="form-control-order"
+							label="Apt No."
+							value={Apt_f}
+							onChange={(e) => setApt_f(e.target.value)}
+						/>
+					</div>
+					<div className="form-group-order" style={{ marginBottom: '16px' }}>
+						<TextField
+							sx={{ mb: 1, width: '100%' }}
+							size="small"
+							variant="outlined"
+							className="form-control-order"
+							label="City"
+							value={City_f}
+							onChange={(e) => setCity_f(e.target.value)}
+						/>
+					</div>
+					<div className="form-group-order" style={{ marginBottom: '16px' }}>
+						<TextField
+							sx={{ mb: 1, width: '100%' }}
+							size="small"
+							variant="outlined"
+							className="form-control-order"
+							label="State"
+							value={State_f}
+							onChange={(e) => setState_f(e.target.value)}
+						/>
+					</div>
+					<div className="form-group-order" style={{ marginBottom: '16px' }}>
+						<TextField
+							sx={{ mb: 1, width: '100%' }}
+							size="small"
+							variant="outlined"
+							className="form-control-order"
+							label="Zip Code"
+							value={Zip_f}
+							onChange={(e) => setZip_f(e.target.value)}
+						/>
+						<TextField
+							sx={{ mb: 1, width: '100%', display: email_show ? 'block' : 'none' }} // Conditional display based on email_show state
+							size="small"
+							variant="outlined"
+							label="Email"
+							onChange={(e) => setEmail_f(e.target.value)}
+						/>
+					</div>
+				</div>
+			</div>
 
 
-																																																							<
-        div className="wrapper2" >
-																																																								<
-        div className="one1" >
-																																																									<
-        div className="text-center mb-2 alert " >
-																																																										<
-        label htmlFor=""
-																																																											className="h8" >
-																																																											Usps {PriorityStatus} <
-        /label> <
-        /div> <
-        /div> <
-        div className="two1" >
-																																																												<
-        div className="text-center mb-2 alert " >
-																																																													<
-        label htmlFor=""
-																																																														className="h8" > {Usps} <
-        /label> <
-        /div> <
-        /div> <
-        div className="three1" >
-																																																															<
-        div className="text-center mt-4" >
-																																																																<
-        Button variant="contained"
-																																																																	disabled={false}
-																																																																	onClick={handleUsps} >
-																																																																	select <
-        /Button> <
-        /div> <
-        /div> <
-        /div> <
-        div className="wrapper2" >
-																																																																		<
-        div className="one1" >
-																																																																			<
-        div className="text-center mb-2 alert " >
-																																																																				<
-        label htmlFor=""
-																																																																					className="h8" >
-																																																																					Ups {PriorityStatus} <
-        /label> <
-        /div> <
-        /div> <
-        div className="two1" >
-																																																																						<
-        div className="text-center mb-2 alert " >
-																																																																							<
-        label htmlFor=""
-																																																																								className="h8" > {Ups} <
-        /label> <
-        /div> <
-        /div> <
-        div className="three1" >
-																																																																									<
-        div className="text-center mt-4" >
-																																																																										<
-        Button variant="contained"
-																																																																											disabled={false}
-																																																																											onClick={handleUps} >
-																																																																											select <
-        /Button> <
-        /div> <
-        /div> <
-        /div> <
-        div className="text-center mb-2 alert " >
-																																																																												<
-        label htmlFor=""
-																																																																													className="h8" >
-																																																																													We suggest to go with {CarrierSug} <
-        /label> <
-        /div>
+				<div className="grid-item" style={{ padding: '20px', maxWidth: '400px', margin: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderRadius: '8px', backgroundColor: '#fff' }}>
+					<div>
+						<div className="text-center mb-2 alert">
+							<label htmlFor="" className="h6">
+								<b>To Address</b>
+							</label>
+						</div>
+						<div className="form-group-order">
+							<TextField
+								sx={{ mb: 1, width: '100%' }}
+								size="small"
+								variant="outlined"
+								className="form-control-order"
+								label="Street"
+								value={Street_t}
+								onChange={(e) => setStreet_t(e.target.value)}
+							/>
+						</div>
+						<div className="form-group-order">
+							<TextField
+								sx={{ mb: 1, width: '100%' }}
+								size="small"
+								variant="outlined"
+								className="form-control-order"
+								label="Apt No."
+								value={Apt_t}
+								onChange={(e) => setApt_t(e.target.value)}
+							/>
+						</div>
+						<div className="form-group-order">
+							<TextField
+								sx={{ mb: 1, width: '100%' }}
+								size="small"
+								variant="outlined"
+								className="form-control-order"
+								label="City"
+								value={City_t}
+								onChange={(e) => setCity_t(e.target.value)}
+							/>
+						</div>
+						<div className="form-group-order">
+							<TextField
+								sx={{ mb: 1, width: '100%' }}
+								size="small"
+								variant="outlined"
+								className="form-control-order"
+								label="State"
+								value={State_t}
+								onChange={(e) => setState_t(e.target.value)}
+							/>
+						</div>
+						<div className="form-group-order">
+							<TextField
+								sx={{ mb: 1, width: '100%' }}
+								size="small"
+								variant="outlined"
+								className="form-control-order"
+								label="Zip Code"
+								value={Zip_t}
+								onChange={(e) => setZip_t(e.target.value)}
+							/>
+						</div>
+					</div>
+				</div>
 
-																																																																													<
-        div className="text-center mb-2 alert " >
-																																																																														<
-        label htmlFor=""
-																																																																															className="h8" > {Userselection} <
-        /label> <
-        /div>
+				
+				<div className="grid-item" style={{ padding: '20px', maxWidth: '400px', margin: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderRadius: '8px', backgroundColor: '#fff' }}>
+				<div>
+					<div className="text-center mb-2 alert">
+						<label htmlFor="" className="h6">
+							<b>Delivery Product Details</b>
+						</label>
+					</div>
 
-																																																																															<
-        div id='Paynow'
-																																																																																style={
-																																																																																	{ visibility: 'hidden' }}
-																																																																																className="text-center mt-4" >
-																																																																																<
-        Button variant="contained"
-																																																																																	disabled={!Paynow}
-																																																																																	onClick={handlePayment} >
-																																																																																	Pay now!
-																																																																																	<
-        /Button> <
-        /div>
+					<div>
+						<FormControl variant="outlined" sx={{ mb: 1 }} fullWidth>
+							<InputLabel id="demo-simple-select-label">Size</InputLabel>
+							<Select
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								value={Size}
+								label="Size"
+								type="text"
+								onChange={(e) => setSize(e.target.value)}
+							>
+								<MenuItem value={'Small'}>Small</MenuItem>
+								<MenuItem value={'Medium'}>Medium</MenuItem>
+								<MenuItem value={'Large'}>Large</MenuItem>
+							</Select>
+						</FormControl>
+					</div>
 
-																																																																																	<
-        div id='Paypal'
-																																																																																		style={
-																																																																																			{ visibility: 'hidden' }} >
-																																																																																		<
-        PayPalScriptProvider options={
-																																																																																				{
-																																																																																					"client-id": "AaI3Xz11Der8s28FmpmG5mlKhh1Lb969MGwda6aGeY7TF3NGKkcj02ke3D4UEgnbWv0xod98vIlnfSV0",
-																																																																																				}
-																																																																																			} >
-																																																																																			<
-        div > {
-																																																																																					show ? (<
-																																																																																						PayPalButtons style={
-																																																																																							{ layout: "vertical" }}
-																																																																																						createOrder={createOrder}
-																																																																																						onApprove={onApprove}
-																																																																																					/>
-																																																																																					) : null
-																																																																																				} <
-        /div> <
-        /PayPalScriptProvider> <
-        /div>
+					<div className="form-group">
+						<TextField
+							sx={{ mb: 1 }}
+							size="small"
+							variant="outlined"
+							className="form-control"
+							label="Weight (in lbs)"
+							value={Weight}
+							onChange={(e) => setWeight(e.target.value)}
+						/>
+					</div>
+					<div>
+						<FormControl variant="outlined" sx={{ mb: 1 }} fullWidth>
+							<InputLabel id="demo-simple-select-label">Priority</InputLabel>
+							<Select
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								value={Priority}
+								label="Size"
+								type="text"
+								onChange={(e) => setPriority(e.target.value)}
+							>
+								<MenuItem value={1}>Normal</MenuItem>
+								<MenuItem value={1.5}>Priority</MenuItem>
+							</Select>
+						</FormControl>
+					</div>
+					<div className="text-center mt-4">
+						<Button
+							variant="contained"
+							disabled={!Street_f || !City_f || !State_f || !Zip_f ||
+								!Street_t || !City_t || !State_t || !Zip_t ||
+								!Size || !Weight || !Priority || (!user && !Email_f)}
+							onClick={handleQuotations}
+						>
+							Get Quotations
+						</Button>
+					</div>
+				</div>
+			</div>
 
-																																																																																				<
-        /div> { /* </Grow> */} <
-        /div>
+			
+			</div>
 
+			
 
-																																																																																				<
-        /div>
+			<div id='Quotations' style={{ visibility: 'hidden' }}>
+				<div className="grid-wrapper-list">
+					<div className="text-center mb-2 alert">
+						<label htmlFor="" className="h6">
+							Quotations
+						</label>
+					</div>
+					<div className="grid-item">
+						<div className="one1">
+							<div className="text-center mb-2 alert">
+								<label htmlFor="" className="h8">
+									FedEx {PriorityStatus}
+								</label>
+							</div>
+						</div>
+						<div className="two1">
+							<div className="text-center mb-2 alert">
+								<label htmlFor="" className="h8"> {Fedex} </label>
+							</div>
+						</div>
+						<div className="three1">
+							<div className="text-center mt-4">
+								<Button variant="contained" disabled={false} onClick={handleFedex}>
+									select
+								</Button>
+							</div>
+						</div>
+					</div>
+
+					<div className="grid-item">
+						<div className="one1">
+							<div className="text-center mb-2 alert">
+								<label htmlFor="" className="h8">
+									Usps {PriorityStatus}
+								</label>
+							</div>
+						</div>
+						<div className="two1">
+							<div className="text-center mb-2 alert">
+								<label htmlFor="" className="h8"> {Usps} </label>
+							</div>
+						</div>
+						<div className="three1">
+							<div className="text-center mt-4">
+								<Button variant="contained" disabled={false} onClick={handleUsps}>
+									select
+								</Button>
+							</div>
+						</div>
+					</div>
+
+					<div className="grid-item">
+						<div className="one1">
+							<div className="text-center mb-2 alert">
+								<label htmlFor="" className="h8">
+									Ups {PriorityStatus}
+								</label>
+							</div>
+						</div>
+						<div className="two1">
+							<div className="text-center mb-2 alert">
+								<label htmlFor="" className="h8"> {Ups} </label>
+							</div>
+						</div>
+						<div className="three1">
+							<div className="text-center mt-4">
+								<Button variant="contained" disabled={false} onClick={handleUps}>
+									select
+								</Button>
+							</div>
+						</div>
+					</div>
+				</div>
+					<div className="text-center mb-2 alert">
+						<label htmlFor="" className="h8">
+							We suggest to go with {CarrierSug}
+						</label>
+					</div>
+
+					<div className="text-center mb-2 alert">
+						<label htmlFor="" className="h8"> {Userselection} </label>
+					</div>
+
+					<div id="Paynow" style={{ visibility: 'hidden' }} className="text-center mt-4">
+						<Button variant="contained" disabled={!Paynow} onClick={handlePayment}>
+							Pay now!
+						</Button>
+					</div>
+
+					<center><div id="Paypal" style={{ visibility: 'hidden' }} className="grid-item">
+					<PayPalScriptProvider options={{ "client-id": "AQkWnOy6_u2JcRcgC4RuUjHqM0H4QrIWAbLZYyEmS1W_dsfHPxK5k4GtD-0GrWsg3D67Y_YXVLfeGHht" }}>
+							<div>
+								{show ? (
+									<PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
+								) : null}
+							</div>
+						</PayPalScriptProvider>
+					</div>
+					</center>
+				</div>
+			</div>
+		
+	
+
 																																																																																				)
 };
-
-																																																																																				export default Order;
+export default Order;

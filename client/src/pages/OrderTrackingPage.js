@@ -5,6 +5,7 @@ import { TextField,Button } from "@mui/material";
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import Geocode from "react-geocode";
 //import 'bootstrap/dist/css/bootstrap.min.css';
+import { FiShoppingCart, FiUser, FiShoppingBag, FiFastForward, FiTruck, FiGift } from "react-icons/fi";
 
 import { toast } from "react-toastify";
 import { orderstatus } from "../api/user";
@@ -95,70 +96,71 @@ export class OrderTracking extends React.Component {
 				</Button>
                 </div>
 
-                <div class="card mb-3 mt-5">
-                    <div class="p-4 text-center text-white text-lg bg-dark rounded-top"><span class="text-uppercase">Tracking Order No - </span>
-                        <span class="text-medium"> 
+                <div>
+                    <div className="p-4 text-center text-white text-lg bg-dark rounded-top"><span className="text-uppercase">Tracking Order No - </span>
+                        <span className="text-medium"> 
                             {this.state.trackingID}
                         </span>
                     </div>
-                    <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
-                        <div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped Via:</span> {this.state.courier}</div>
-                        <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {this.state.status}</div>
-                        <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> {this.state.eod}</div>
-                    </div>
-                    
-                    <div class="card-body">
-                        <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                            <div class={`${(this.state.statusnum>=1)? "step completed" : "step"}`}>
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon"><i class="pe-7s-cart"></i></div>
-                                </div>
+                    <div className="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+                        <div className="w-100 text-center py-1 px-2"><span className="text-medium">Shipped Via:</span> {this.state.courier}</div>
+                        <div className="w-100 text-center py-1 px-2"><span className="text-medium">Status:</span> {this.state.status}</div>
+                        <div className="w-100 text-center py-1 px-2"><span className="text-medium">Expected Delivery Date:</span> {this.state.eod}</div>
+                                                    </div>
                                 
-                                <h4 class="step-title">Order Placed</h4>
+                                <div className="card-body">
+                    <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                        <div className={`${this.state.statusnum >= 1 ? "step completed" : "step"}`}>
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><FiShoppingCart /></div>
                             </div>
                             
-                            <div class={`${(this.state.statusnum>=2)? "step completed" : "step"}`}>
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon"><i class="pe-7s-user"></i></div>
+                            <h4 className="step-title">Order Placed</h4>
                                 </div>
 
-                                <h4 class="step-title">Driver Assigned</h4>
+                                <div className={`${this.state.statusnum >= 2 ? "step completed" : "step"}`}>
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><FiUser /></div>
                             </div>
                             
-                            <div class={`${(this.state.statusnum>=3)? "step completed" : "step"}`}>
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon"><i class="pe-7s-drawer"></i></div>
+                            <h4 className="step-title">Driver Assigned</h4>
                                 </div>
                     
-                                <h4 class="step-title">Order Picked Up</h4>
+                                <div className={`${this.state.statusnum >= 3 ? "step completed" : "step"}`}>
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><FiShoppingBag /></div>
                             </div>
                             
-                            <div class={`${(this.state.statusnum>=4)? "step completed" : "step"}`}>
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon"><i class="pe-7s-car"></i></div>
+                            <h4 className="step-title">Order Picked Up</h4>
                                 </div>
                                 
-                                <h4 class="step-title">In Transit</h4>
+                                <div className={`${this.state.statusnum >= 4 ? "step completed" : "step"}`}>
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><FiFastForward /></div>
                             </div>
                             
-                            <div class={`${(this.state.statusnum>=5)? "step completed" : "step"}`}>
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon"><i class="pe-7s-mail"></i></div>
+                            <h4 className="step-title">In Transit</h4>
                                 </div>
                                 
-                                <h4 class="step-title">Out for Delivery</h4>
+                                <div className={`${this.state.statusnum >= 5 ? "step completed" : "step"}`}>
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><FiTruck /></div>
                             </div>
 
-                            <div class={`${(this.state.statusnum>=6)? "step completed" : "step"}`}>
-                                <div class="step-icon-wrap">
-                                    <div class="step-icon"><i class="pe-7s-home"></i></div>
+                            <h4 className="step-title">Out for Delivery</h4>
                                 </div>
                                 
-                                <h4 class="step-title">Order Delivered</h4>
+                                <div className={`${this.state.statusnum >= 6 ? "step completed" : "step"}`}>
+                            <div className="step-icon-wrap">
+                                <div className="step-icon"><FiGift /></div>
                             </div>
+
+                            <h4 className="step-title">Order Delivered</h4>
                         </div>
                     </div>
                 </div>
+</div>
+
                     <div style={{align:"center", visibility: `${(!this.state.location)? "hidden" : "visible"}`}}>
                     <div className='google-map' >
                     <h5 style={{color: '#80ffff',display: 'inline-block'}}>Package is at: </h5> 

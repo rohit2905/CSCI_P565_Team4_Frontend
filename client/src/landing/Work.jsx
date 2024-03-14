@@ -26,7 +26,7 @@ const Work = () => {
       <div className="work-section-top">
         <p className="primary-subheading">Features</p>
         <h1 className="primary-heading">What We Offer</h1>
-        <p className="primary-text">
+        <p className="primary-text" data-testid="ptext">
           Discover Our Features: Streamlined, Efficient, Reliable
         </p>
       </div>

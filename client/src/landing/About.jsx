@@ -13,11 +13,11 @@ const About = () => {
         <img src={AboutBackgroundImage} alt="" />
       </div>
       <div className="about-section-text-container">
-        <p className="primary-subheading">About</p>
-        <h1 className="primary-heading">
+        <p className="primary-subheading" data-testid='about'>About</p>
+        <h1 className="primary-heading" data-testid='pheading'>
           <b>DeliverWise offers everything you need</b>
         </h1>
-        <p className="primary-text">
+        <p className="primary-text" data-testid='ptext'>
          We offer streamlines worldwide shipping, offering customers a wide range of services to choose from including UPS, USPS, FedEx, and more. With intuitive order placement, real-time tracking, and comprehensive review capabilities, it's your ultimate solution for hassle-free deliveries.
         </p>
       </div>

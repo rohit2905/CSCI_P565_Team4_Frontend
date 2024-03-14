@@ -7,7 +7,13 @@ on:
     branches: [main]
 jobs:
   # This workflow contains multiple jobs
-  # build_test:
+  build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Unit Tests
+        uses: npm test
   #   # The type of runner that the job will run on
   #   runs-on: ubuntu-latest
   #   strategy:

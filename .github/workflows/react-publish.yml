@@ -32,10 +32,10 @@ jobs:
       # build and test the apps
       - name: build
         run: |
-          npm run build
+          npm build
       - name: test
         run: |
-          npm run test
+          npm test
         working-directory: client/
           
   push_to_Docker_Hub:

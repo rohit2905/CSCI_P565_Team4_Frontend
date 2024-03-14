@@ -33,6 +33,7 @@ jobs:
       - name: build
         run: |
           npm build
+        working-directory: client/
       - name: test
         run: |
           npm test

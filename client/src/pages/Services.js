@@ -24,7 +24,6 @@ const Services = () => {
             const data = await response.json();
             setItems(data);
             setFilteredItems(data); 
-            console.log(data);
         } catch (error) {
             console.error('Error fetching items:', error);
         }
@@ -38,7 +37,7 @@ const Services = () => {
         applyFilters();}
     }, [  searchClicked]);
     useEffect(() => {
-        console.log("");
+
     }, [searchText]);
     const applyFilters = () => {
         let filtered = [...items];

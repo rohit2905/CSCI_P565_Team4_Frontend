@@ -41,7 +41,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const ManagerHome = () => {
-	const { usertype } = useContext(UserContext);
+	const { user, usertype } = useContext(UserContext);
 	const history = useNavigate();
 
 	const [users, setUsers] = useState([]);
@@ -237,6 +237,9 @@ const ManagerHome = () => {
 	return (
 			<div className="bg-light vh-100">
 					<div className="pt-1 px-5">
+			
+					<center><h1>Welcome, {user}</h1></center>
+		
 						<Button sx={{mx:5}} style={{visibility: 'hidden'}} variant="contained" size="medium"></Button>
 						<Button sx={{mx:5}} style={{visibility: 'hidden'}} variant="contained" size="medium"></Button>
 						

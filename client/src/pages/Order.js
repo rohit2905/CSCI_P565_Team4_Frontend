@@ -5,6 +5,7 @@ import "../App.css"
 import { UserContext } from "../UserContext";
 import Select from '@mui/material/Select';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import axios from 'axios';
 
 // design
 import {
@@ -16,12 +17,8 @@ import {
 	InputLabel,
 	Button,
 } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import MenuItem from '@mui/material/MenuItem';
-import Link from '@mui/material/Link';
-import Grow from '@mui/material/Grow';
-import Input from '@mui/material/Input';
 
 
 // functions
@@ -50,7 +47,7 @@ const Order = () => {
 	const [State_t, setState_t] = useState("");
 	const [Zip_t, setZip_t] = useState("");
 	const [Size, setSize] = useState("");
-	const [Weight, setWeight] = useState("");
+	const [Weight, setWeight] = useState("0");
 	const [Fedex, setFedex] = useState("");
 	const [Ups, setUps] = useState("");
 	const [Usps, setUsps] = useState("");
@@ -58,7 +55,7 @@ const Order = () => {
 	const [CarrierSug, setCarrierSug] = useState("");
 	const [Cost, setCost] = useState("");
 	const [Userselection, setUserselection] = useState("You haven't selected any carrier yet");
-	const [Priority, setPriority] = useState("");
+	const [priority, setPriority] = useState("");
 	const [PriorityStatus, setPriorityStatus] = useState("");
 	const [TrackingID, setTrackingID] = useState("");
 	const [Paynow, setPaynow] = useState("");
@@ -67,6 +64,13 @@ const Order = () => {
 	const [success, setSuccess] = useState(false);
 	const [ErrorMessage, setErrorMessage] = useState("");
 	const [orderID, setOrderID] = useState(false);
+
+	const [carriers, setCarriers] = useState([]);
+	const [selectedCarrier, setSelectedCarrier] = useState(null);
+	const [userSelection, setUserSelection] = useState('');
+	const [distance, setDistance] = useState(1); // Assuming you have a way to set this
+	const [costs, setCosts] = useState({});
+	const [carrierSuggestion, setCarrierSuggestion] = useState('');
 
 	if (user) {
 		var email_show = 'hidden';
@@ -82,98 +86,81 @@ const Order = () => {
 
 	}
 
-	// TODO: fetch data from DB instead of static carriers
+	// Fetch carriers on component mount
+	useEffect(() => {
+		axios.get(`${process.env.REACT_APP_API_URL}/getallservices`)
+			.then(response => setCarriers(response.data))
+			.catch(error => console.error("Failed to fetch carriers", error));
+	}, []);
+
+	useEffect(() => {
+		setDistance(Math.abs(Zip_f - Zip_t) == 0 ? 1 : Math.abs(Zip_f - Zip_t));
+		handleQuotations();
+	}, [carriers, distance, priority]);
+
+
 	const handleQuotations = async (e) => {
 		make_visible('Quotations');
-		var distance = Math.abs(Zip_f - Zip_t);
-		var Fed_cost = parseInt((distance * Priority));
-		var Ups_cost = parseInt(distance * Priority);
-		var Usps_cost = parseInt(distance * Priority);
-		console.log(distance);
-
-		if (Fed_cost == Math.min(Fed_cost, Ups_cost, Usps_cost)) {
-			var carrie_coice = 'FedEx';
-			var Fed_cost1 = Fed_cost;
-			var Ups_cost1 = parseInt(Math.min(Fed_cost * 1.27, Ups_cost));
-			var Usps_cost1 = parseInt(Math.min(Fed_cost * 1.5, Usps_cost));
-		} else if (Ups_cost == Math.min(Fed_cost, Ups_cost, Usps_cost)) {
-			var carrie_coice = 'Ups';
-			var Fed_cost1 = parseInt(Math.min(Ups_cost * 1.5, Fed_cost));
-			var Ups_cost1 = Ups_cost;
-			var Usps_cost1 = parseInt(Math.min(Ups_cost * 1.27, Usps_cost));
-		} else {
-			var carrie_coice = 'Usps';
-			var Fed_cost1 = parseInt(Math.min(Usps_cost * 1.27, Fed_cost));
-			var Ups_cost1 = parseInt(Math.min(Usps_cost * 1.5, Ups_cost));
-			var Usps_cost1 = Usps_cost;
+		
+		let tempCosts = {};
+		carriers.forEach(carrier => {
+			if (Size === carrier.Dimension) {
+			const key = `${carrier.CarrierName} - ${carrier.ServiceType}`; // Unique key
+			tempCosts[key] = parseInt(parseInt(Weight) + ((distance) / 2 * priority * carrier.Price));
+			}
+		});
+		console.log(tempCosts);
+		//let cheapest = carriers.reduce((a, b) => tempCosts[a.CarrierName] < tempCosts[b.CarrierName] ? a : b, carriers[0]);
+		let cheapestKey = null;
+		let lowestPrice = Infinity;
+		for (const [key, price] of Object.entries(tempCosts)) {
+			if (price < lowestPrice) {
+				lowestPrice = price;
+				cheapestKey = key;
+			}
 		}
-		setUserselection("You haven't selected any carrier yet");
+		setCosts(tempCosts);
+		setSelectedCarrier(cheapestKey);
+		setUserSelection(`Recommended: ${cheapestKey} as it offers the best rate.`);
+		setCarrierSuggestion(cheapestKey);
 		setPaynow("");
-		setCarrierSug(carrie_coice);
-		setFedex(Fed_cost1);
-		setUps(Ups_cost1);
-		setUsps(Usps_cost1);
+		//setCarrierSug(carrie_coice);
+		
 		setAddress_f(Street_f.concat(", ", Apt_f, ", ", City_f, ", ", State_f, ", ", Zip_f));
 		setAddress_t(Street_t.concat(", ", Apt_t, ", ", City_t, ", ", State_t, ", ", Zip_t));
-		if (Priority > 1) {
+		if (priority > 1) {
 			setPriorityStatus("Priority");
 		} else {
 			setPriorityStatus("Normal");
 		}
 		//console.log(Fedex,Ups,Usps,Carrier,Cost,Priority);
 	};
-	// useEffect(() => {
-	//     setCarrier("FedEx");
-	//     setCost(Fedex);
-	// }, []);
 
-
-	const handleFedex = async (e) => {
+	const handleCarrierSelection = (carrierName, serviceType) => {
 		make_visible('Paynow');
-		setCarrier("FedEx");
-		setCost(Fedex);
+		setSelectedCarrier(carrierName+" - "+serviceType);
+		setCarrier(carrierName);
+		setUserSelection(`You have selected ${carrierName + " - " + serviceType}, which costs $${costs[carrierName + " - " + serviceType]}.`);
+		setCost(costs[carrierName + " - " + serviceType])
 		setPaynow(1);
-		setUserselection("You have selected".concat(" ", 'FedEx', " ", PriorityStatus, " which costs ", Fedex));
-		//console.log(Address_f,Address_t);
 	};
 
-	const handleUps = async (e) => {
-		make_visible('Paynow');
-		setCarrier("Ups");
-		setCost(Ups);
-		setPaynow(1);
-		setUserselection("You have selected".concat(" ", 'Ups', " ", PriorityStatus, " which costs ", Ups));
-		// setUserselection("You have selected Ups");
-	};
-	const handleUsps = async (e) => {
-		make_visible('Paynow');
-		setCarrier("Usps");
-		setCost(Usps);
-		setPaynow(1);
-		setUserselection("You have selected".concat(" ", 'Usps', " ", PriorityStatus, " which costs ", Usps));
-		// setUserselection("You have selected Usps");
-	};
 
 	const handlePayment = async (e) => {
 		make_visible('Paypal');
 		setShow(true);
+		console.log(Cost);
 		var tId = Math.random();
 		tId = tId * 100000000;
 		tId = parseInt(tId);
 		setTrackingID(tId);
-		// console.log(TrackingID,Address_f,Address_t,Cost,Carrier,Size,Weight,PriorityStatus);
-		// const res = await OrderDetails({TrackingID,Address_f,Address_t,Cost,Carrier,Size,Weight,PrioritySatus});
-
-		// console.log(Userselection,Address_f,Address_t,Cost,Carrier);
+	
 	};
 
 	const paymentupdate = async (e) => {
-		// console.log('This is Traking ID in paymentupdate',TrackingID);
-		// e.preventDefault();
 		var PaymentStatus = 'Paid';
 		var Customer = useremail || Email_f;
 		var OrderStatus = "order placed";
-		// console.log(`email is ${Customer}`);
 		const res = await OrderDetails({ TrackingID, Address_f, Address_t, Cost, Carrier, Size, Weight, PriorityStatus, PaymentStatus, Customer });
 		const res2 = await orderemail({ Customer, Cost, TrackingID });
 	};
@@ -182,8 +169,8 @@ const Order = () => {
 
 	// creates a paypal order
 	const createOrder = (data, actions) => {
-		// console.log('This is Traking ID',TrackingID);
 		return actions.order.create({
+			
 			purchase_units: [{
 				description: "DeliverWise Shipping Option",
 				amount: { currency_code: "USD", value: Cost, },
@@ -408,7 +395,7 @@ const Order = () => {
 							<Select
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
-								value={Priority}
+								value={priority}
 								label="Size"
 								type="text"
 								onChange={(e) => setPriority(e.target.value)}
@@ -423,7 +410,7 @@ const Order = () => {
 							variant="contained"
 							disabled={!Street_f || !City_f || !State_f || !Zip_f ||
 								!Street_t || !City_t || !State_t || !Zip_t ||
-								!Size || !Weight || !Priority || (!user && !Email_f)}
+								!Size || !Weight || !priority || (!user && !Email_f)}
 							onClick={handleQuotations}
 						>
 							Get Quotations
@@ -437,107 +424,160 @@ const Order = () => {
 
 			
 
-			<div id='Quotations' style={{ visibility: 'hidden' }}>
-				<div className="grid-wrapper-list">
-					<div className="text-center mb-2 alert">
-						<label htmlFor="" className="h6">
-							Quotations
-						</label>
+			<div id='Quotations' style={{ display: 'flex', visibility: 'hidden',
+				flex: 1,
+				paddingRight: '20px', // Adds space on the right for consistency
+				borderRight: '2px solid #ccc', // Adds a border line to separate from the right partition
+				boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adds a subtle shadow for depth
+				padding: '20px', // Adds spacing inside the partition
+				backgroundColor: '#f9f9f9', // Light background color for contrast
+				borderRadius: '5px', // Softens the corners
+				marginRight: '20px',
+				}}>
+				
+				{/* Left Partition */}
+				<div style={{ flex: 1 }}>
+					<center><div className="text-center mb-2 alert" style={{ marginBottom: '20px' }}>
+						<label htmlFor="" className="h6" style={{
+							fontWeight: 'bold', // Makes text bold
+							fontSize: '24px', // Larger text for better visibility
+							color: '#333', // Dark text for contrast
+						}}>Quotations</label>
 					</div>
-					<div className="grid-item">
-						<div className="one1">
-							<div className="text-center mb-2 alert">
-								<label htmlFor="" className="h8">
-									FedEx {PriorityStatus}
-								</label>
+						<div style={{ textAlign: 'center', fontSize: '16px' }}>
+							<div>
+								<span style={{
+									display: 'inline-block',
+									width: '16px',
+									height: '16px',
+									backgroundColor: 'rgba(45, 207, 27, 0.5)',
+									border: '1px solid black',
+									marginRight: '5px',
+									verticalAlign: 'middle'
+								}}></span>
+								Selected Carrier
+							</div>
+							<div>
+								<span>★</span>
+								<span style={{
+									display: 'inline-block',
+									width: '16px',
+									height: '16px',
+									backgroundColor: '#ed9624',
+									border: '1px solid black',
+									marginRight: '5px',
+									verticalAlign: 'middle'
+								}}></span>
+								Recommended Carrier
+							</div>
+							<div>
+								<span style={{
+									display: 'inline-block',
+									width: '16px',
+									height: '16px',
+									backgroundColor: 'rgba(255, 255, 255, 0.4)',
+									border: '1px solid black',
+									marginRight: '5px',
+									verticalAlign: 'middle'
+								}}></span>
+								Other Carriers
 							</div>
 						</div>
-						<div className="two1">
-							<div className="text-center mb-2 alert">
-								<label htmlFor="" className="h8"> {Fedex} </label>
+					</center>
+					<div className="grid-wrapper-list">
+						
+						{carriers.filter(carrier => Size === carrier.Dimension).map((carrier) => (
+							<div key={carrier.name} className="grid-item" onClick={() => handleCarrierSelection(carrier.CarrierName, carrier.ServiceType)} style={{
+								marginBottom: '15px',
+								padding: '10px',
+								boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+								borderRadius: '10px',
+								border: '1px solid rgba(255, 255, 255, 0.18)',
+								backgroundColor: selectedCarrier === carrier.CarrierName + " - " + carrier.ServiceType ? 'rgba(45, 207, 27, 0.5)' : (carrierSuggestion === carrier.CarrierName+" - "+carrier.ServiceType ? '#ed9624' : '#f2f2f2'),
+								backdropFilter: 'blur(5px)',
+								WebkitBackdropFilter: 'blur(5px)',
+							}}>
+								<div className="one1" style={{ marginBottom: '10px' }}>
+									<div className="text-center mb-2 alert">
+										<label htmlFor="" className="h8" style={{ fontSize: '18px', color: '#555' }}>
+											<b>{carrier.CarrierName} {carrier.ServiceType}<br />({PriorityStatus})</b>
+											{carrierSuggestion === carrier.CarrierName+" - "+carrier.ServiceType ? <>&nbsp;<span><b>★</b></span></> : null}
+										</label>
+									</div>
+								</div>
+								<div className="two1" style={{ marginBottom: '10px' }}>
+									<div className="text-center mb-2 alert">
+										<label htmlFor="" className="h8" style={{ fontSize: '25px', color: '#555' }}>
+											<b>${costs[carrier.CarrierName+" - "+carrier.ServiceType]}</b>
+										</label>
+									</div>
+								</div>
+								<div className="three1">
+									<div className="text-center mt-4">
+										
+									</div>
+								</div>
 							</div>
-						</div>
-						<div className="three1">
-							<div className="text-center mt-4">
-								<Button variant="contained" disabled={false} onClick={handleFedex}>
-									select
-								</Button>
-							</div>
-						</div>
+						))}
 					</div>
-
-					<div className="grid-item">
-						<div className="one1">
-							<div className="text-center mb-2 alert">
-								<label htmlFor="" className="h8">
-									Usps {PriorityStatus}
-								</label>
-							</div>
-						</div>
-						<div className="two1">
-							<div className="text-center mb-2 alert">
-								<label htmlFor="" className="h8"> {Usps} </label>
-							</div>
-						</div>
-						<div className="three1">
-							<div className="text-center mt-4">
-								<Button variant="contained" disabled={false} onClick={handleUsps}>
-									select
-								</Button>
-							</div>
-						</div>
-					</div>
-
-					<div className="grid-item">
-						<div className="one1">
-							<div className="text-center mb-2 alert">
-								<label htmlFor="" className="h8">
-									Ups {PriorityStatus}
-								</label>
-							</div>
-						</div>
-						<div className="two1">
-							<div className="text-center mb-2 alert">
-								<label htmlFor="" className="h8"> {Ups} </label>
-							</div>
-						</div>
-						<div className="three1">
-							<div className="text-center mt-4">
-								<Button variant="contained" disabled={false} onClick={handleUps}>
-									select
-								</Button>
-							</div>
-						</div>
-					</div>
+					
 				</div>
-					<div className="text-center mb-2 alert">
-						<label htmlFor="" className="h8">
-							We suggest to go with {CarrierSug}
-						</label>
+
+				{/* Right Partition */}
+				<div style={{
+					flex: 1,
+					paddingLeft: '20px',
+					borderLeft: '2px solid #ccc', // Adds a border line to separate from the left partition
+					boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adds a subtle shadow for depth
+					padding: '20px', // Adds spacing inside the partition
+					backgroundColor: '#f9f9f9', // Light background color for contrast
+					borderRadius: '5px', // Softens the corners
+					marginLeft: '20px', // Adds space between the partitions
+				}}>
+					<div className="text-center mb-2 alert" style={{ marginBottom: '20px' }}>
+						<label htmlFor="" className="h8" style={{
+							fontWeight: 'bold', // Makes text bold
+							fontSize: '20px', // Larger text for better visibility
+							color: '#333', // Darker text for contrast
+							textDecoration: 'underline', // Underlines the suggestion for emphasis
+						}}>We suggest going with {carrierSuggestion}</label>
 					</div>
 
-					<div className="text-center mb-2 alert">
-						<label htmlFor="" className="h8"> {Userselection} </label>
+					<div className="text-center mb-2 alert" style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+						<label htmlFor="" className="h8" style={{
+							fontSize: '18px', // Slightly smaller text than the suggestion for hierarchy
+							color: '#555', // Slightly lighter text color
+							fontStyle: 'italic', // Italicizes the selection for distinction
+						}}>{userSelection}</label>
 					</div>
-
 					<div id="Paynow" style={{ visibility: 'hidden' }} className="text-center mt-4">
-						<Button variant="contained" disabled={!Paynow} onClick={handlePayment}>
+						<Button variant="contained" disabled={!Paynow} onClick={handlePayment} style={{
+							backgroundColor: '#007bff', // Example button color
+							color: 'white', // Text color for the button
+							fontWeight: 'bold', // Bold text for the button
+							boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', // Adds shadow to the button for depth
+						}}>
 							Pay now!
 						</Button>
 					</div>
 
-					<center><div id="Paypal" style={{ visibility: 'hidden' }} className="grid-item">
-					<PayPalScriptProvider options={{ "client-id": "AQkWnOy6_u2JcRcgC4RuUjHqM0H4QrIWAbLZYyEmS1W_dsfHPxK5k4GtD-0GrWsg3D67Y_YXVLfeGHht" }}>
-							<div>
-								{show ? (
-									<PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
-								) : null}
-							</div>
-						</PayPalScriptProvider>
-					</div>
+
+					<center>
+						<div id="Paypal" style={{ visibility: 'hidden' }} className="grid-item">
+							<PayPalScriptProvider options={{ "client-id": "AQkWnOy6_u2JcRcgC4RuUjHqM0H4QrIWAbLZYyEmS1W_dsfHPxK5k4GtD-0GrWsg3D67Y_YXVLfeGHht" }}>
+								<div>
+									{show ? (
+										<PayPalButtons style={{ layout: "vertical" }} createOrder={createOrder} onApprove={onApprove} />
+									) : null}
+								</div>
+							</PayPalScriptProvider>
+						</div>
 					</center>
 				</div>
 			</div>
+</div>
+			
+	
 		
 	
 

@@ -95,7 +95,7 @@ const Order = () => {
 
 	useEffect(() => {
 		setDistance(Math.abs(Zip_f - Zip_t) == 0 ? 1 : Math.abs(Zip_f - Zip_t));
-		handleQuotations();
+		//handleQuotations();
 	}, [carriers, distance, priority]);
 
 

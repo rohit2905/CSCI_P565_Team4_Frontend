@@ -156,7 +156,6 @@ const Services = () => {
                 {filteredItems.map((item) => (
                     <div key={item._id} className="card">
                         <strong>Service Type:</strong> {item.ServiceType}<br />
-                        <strong>Service ID:</strong> {item.ServiceId}<br />
                         <strong>Carrier Name:</strong> {item.CarrierName}<br />
                         <strong>Dimension:</strong> {item.Dimension}<br />
                         <strong>Price:</strong> ${item.Price}

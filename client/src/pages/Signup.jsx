@@ -272,11 +272,11 @@ const Signup = () => {
 					<FormHelperText className="ml-1 mt-1">
 						{password === confirmPassword ? (
 							<span className="text-success">
-								Password does match
+								Passwords match
 							</span>
 						) : (
 							<span className="text-danger">
-								Password does not match
+								Passwords does not match
 							</span>
 						)}
 					</FormHelperText>
@@ -287,7 +287,6 @@ const Signup = () => {
 				<Button
 					variant="contained"
 					disabled={
-						!username ||
 						!email ||
 						!password ||
 						!confirmPassword ||

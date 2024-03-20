@@ -104,14 +104,6 @@ const Signup = () => {
 			</FormControl>
 
 
-			<TextField
-					sx={{ mt: 1, ml: 1 }}
-					variant="outlined"
-					className="form-control"
-					label="Username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
 			</div>
 
 			

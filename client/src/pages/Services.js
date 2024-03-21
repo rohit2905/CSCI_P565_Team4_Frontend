@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, Button, TextField, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
+import SortIcon from '@mui/icons-material/Sort';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import './Services.css'; 
 
 const Services = () => {
@@ -13,7 +17,7 @@ const Services = () => {
     });
     const [searchText, setSearchText] = useState('');
     const [searchClicked, setSearchClicked] = useState(false);
-
+    const [sortDirection, setSortDirection] = useState('');
     useEffect(() => {
         fetchItems();
     }, []); 
@@ -31,7 +35,7 @@ const Services = () => {
     useEffect(() => {
         
         applyFilters();
-    }, [items, filters]);
+    }, [items, filters,sortDirection]);
     useEffect(() => {
         if(searchClicked==true){
         applyFilters();}
@@ -39,10 +43,40 @@ const Services = () => {
     useEffect(() => {
 
     }, [searchText]);
+    // useEffect(() => {
+    //     handleSort();
+    // }, [sortDirection]);
+
+    const handleSort = (sortedItems) => {
+        return sortedItems.sort((a, b) => {
+          const priceA = parseFloat(a.Price);
+          const priceB = parseFloat(b.Price);
+          return sortDirection === 'asc' ? priceA - priceB : priceB - priceA;
+        });
+      };
+
+    const toggleSortDirection = () => {
+        setSortDirection(prevDirection => prevDirection === 'asc' ? 'desc' : 'asc');
+    };
     const applyFilters = () => {
         let filtered = [...items];
         for (const key in filters) {
-            if (filters[key] !== '') {
+            if (key === 'PriceRange') {
+                switch (filters[key]) {
+                    case '0-15':
+                        filtered = filtered.filter(item => item.Price >= 0 && item.Price <= 15);
+                        break;
+                    case '15-20':
+                        filtered = filtered.filter(item => item.Price > 15 && item.Price <= 20);
+                        break;
+                    case '>20':
+                        filtered = filtered.filter(item => item.Price > 20);
+                        break;
+                    default:
+                        break;
+                }
+            } 
+            else if (filters[key] !== '') {
                 filtered = filtered.filter(item => item[key] === filters[key]);
             }
         }
@@ -54,7 +88,18 @@ const Services = () => {
                 )
             );
         }
-        setFilteredItems(filtered);
+        // const sortedItems = filtered.sort((a, b) => {
+        //     if (a[sortConfig.key] < b[sortConfig.key]) {
+        //         return sortConfig.direction === 'ascending' ? -1 : 1;
+        //     }
+        //     if (a[sortConfig.key] > b[sortConfig.key]) {
+        //         return sortConfig.direction === 'ascending' ? 1 : -1;
+        //     }
+        //     return 0;
+        // });
+        // setFilteredItems(sortedItems);
+        const sortedFilteredItems = handleSort(filtered);
+        setFilteredItems(sortedFilteredItems);
         setSearchClicked(false);
     };
 
@@ -65,12 +110,18 @@ const Services = () => {
             [name]: value
         }));
     };
-
+    // const handleSortChange = (key) => {
+    //     setSortConfig(prevSortConfig => ({
+    //         key,
+    //         direction: prevSortConfig.direction === 'ascending' && prevSortConfig.key === key ? 'descending' : 'ascending'
+    //     }));
+    // };
     const handleResetFilters = () => {
         setFilters({
             ServiceType: '',
             CarrierName: '',
-            Dimension: ''
+            Dimension: '',
+            PriceRange: '', 
         });
         setSearchText('');
         setSearchClicked(false);
@@ -138,6 +189,26 @@ const Services = () => {
                         ))}
                     </Select>
                 </FormControl>
+                <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                    <InputLabel id="price-range-label">Select Price Range</InputLabel>
+                    <Select
+                        labelId="price-range-label"
+                        id="price-range-select"
+                        value={filters.PriceRange}
+                        name="PriceRange"
+                        onChange={handleFilterChange}
+                        label="Select Price Range"
+                    >
+                        <MenuItem value=""><em>None</em></MenuItem>
+                        <MenuItem value="0-15">$0 - $15</MenuItem>
+                        <MenuItem value="15-20">$15 - $20</MenuItem>
+                        <MenuItem value=">20">More than $20</MenuItem>
+                    </Select>
+                </FormControl>
+                <IconButton onClick={() => toggleSortDirection('Price')} sx={{ p: '10px' }}>
+                    <SortIcon />
+                    {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+                </IconButton>
                 <TextField
                     label="Search"
                     variant="outlined"

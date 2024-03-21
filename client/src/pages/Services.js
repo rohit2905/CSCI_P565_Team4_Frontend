@@ -24,7 +24,6 @@ const Services = () => {
             const data = await response.json();
             setItems(data);
             setFilteredItems(data); 
-            console.log(data);
         } catch (error) {
             console.error('Error fetching items:', error);
         }
@@ -38,7 +37,7 @@ const Services = () => {
         applyFilters();}
     }, [  searchClicked]);
     useEffect(() => {
-        console.log("");
+
     }, [searchText]);
     const applyFilters = () => {
         let filtered = [...items];
@@ -157,7 +156,6 @@ const Services = () => {
                 {filteredItems.map((item) => (
                     <div key={item._id} className="card">
                         <strong>Service Type:</strong> {item.ServiceType}<br />
-                        <strong>Service ID:</strong> {item.ServiceId}<br />
                         <strong>Carrier Name:</strong> {item.CarrierName}<br />
                         <strong>Dimension:</strong> {item.Dimension}<br />
                         <strong>Price:</strong> ${item.Price}

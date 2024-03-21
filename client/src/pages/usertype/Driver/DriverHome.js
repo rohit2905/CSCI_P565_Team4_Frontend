@@ -22,7 +22,6 @@ import {
 	InputLabel,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
@@ -116,6 +115,9 @@ const DriverHome = () => {
 	if(usertype == 20){
 	return (
 			<div className="bg-light vh-100">
+			<div className="pt-1 px-5">
+				<center><h1>Welcome, {user}</h1></center>
+			</div>
 					<div className="container mt-5 py-4 w-100 col-10 col-sm-8">
 					<div>
 							<Paper elevation={2}>

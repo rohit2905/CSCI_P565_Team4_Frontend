@@ -88,7 +88,7 @@ const Signup = () => {
 
 			
 			<div>
-			<FormControl variant="standard" sx={{ m: 1, width: '20ch' }} fullWidth>
+			<FormControl variant="outlined" sx={{ m: 1, width: '20ch' }} fullWidth>
 				<InputLabel id="demo-simple-select-label">Type of User</InputLabel>
 				<Select
 					labelId="demo-simple-select-label"
@@ -104,14 +104,6 @@ const Signup = () => {
 			</FormControl>
 
 
-			<TextField
-					sx={{ mt: 1, ml: 1 }}
-					variant="standard"
-					className="form-control"
-					label="Username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
 			</div>
 
 			
@@ -121,7 +113,7 @@ const Signup = () => {
 				<TextField
 					sx={{ m: 1 }}
 					size="small"
-					variant="standard"
+					variant="outlined"
 					className="form-control"
 					label="Email"
 					value={email}
@@ -133,7 +125,7 @@ const Signup = () => {
 			<div className="form-group">
 				<FormControl
 					sx={{ m: 1 }}
-					variant="standard"
+					variant="outlined"
 					size="small"
 					className="form-control"
 				>
@@ -143,6 +135,7 @@ const Signup = () => {
 						label="Password"
 						type={showPassword ? "text" : "password"}
 						value={password}
+						variant="outlined"
 						onChange={(e) => setPassword(e.target.value)}
 						endAdornment={
 							<InputAdornment position="end">
@@ -269,7 +262,7 @@ const Signup = () => {
 					sx={{ m: 1 }}
 					size="small"
 					type="password"
-					variant="standard"
+					variant="outlined"
 					className="form-control"
 					label="Confirm Password"
 					value={confirmPassword}
@@ -279,11 +272,11 @@ const Signup = () => {
 					<FormHelperText className="ml-1 mt-1">
 						{password === confirmPassword ? (
 							<span className="text-success">
-								Password does match
+								Passwords match
 							</span>
 						) : (
 							<span className="text-danger">
-								Password does not match
+								Passwords does not match
 							</span>
 						)}
 					</FormHelperText>
@@ -294,7 +287,6 @@ const Signup = () => {
 				<Button
 					variant="contained"
 					disabled={
-						!username ||
 						!email ||
 						!password ||
 						!confirmPassword ||
@@ -308,7 +300,7 @@ const Signup = () => {
 					}
 					onClick={handleRegister}
 				>
-					Submit
+					Sign Up
 				</Button>
 			</div>
 			

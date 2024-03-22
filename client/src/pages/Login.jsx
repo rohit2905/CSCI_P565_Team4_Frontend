@@ -109,6 +109,14 @@ const Login = () => {
       setCaptchaReq(true);
     }
   };
+
+  const googleAuth = () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+      "_self"
+    );
+  };
+
   return !user ? (
     <Container component="main" maxWidth="lg">
       
@@ -298,6 +306,16 @@ const Login = () => {
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Log In
+                </Button>
+                <p>or</p>
+                <Button
+                  autoFocus
+                  fullWidth
+                  variant="contained"
+                  disables={!otp}
+                  onClick={googleAuth}
+                  sx={{ mt: 3, mb: 2}}>
+                    Sign in with Google
                 </Button>
                 <Grid container>
                   <Grid item xs>

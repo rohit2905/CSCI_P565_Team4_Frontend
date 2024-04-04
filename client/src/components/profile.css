@@ -1,0 +1,40 @@
+.user-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #ffe8d6; /* Light peach background, or choose your brand color */
+    font-family: 'Arial', sans-serif; /* This should match your website's font */
+  }
+  
+  .user-profile-card {
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px; /* Adjust the width as needed */
+  }
+  
+  .user-profile-card h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-detail {
+    margin-bottom: 15px;
+  }
+  
+  .user-detail label {
+    font-weight: bold;
+    color: #888;
+    display: block;
+  }
+  
+  .user-detail div {
+    color: #333;
+    background: #fafafa; /* A subtle background for the detail */
+    padding: 10px;
+    border-radius: 4px;
+  }
+  

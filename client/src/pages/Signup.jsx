@@ -74,6 +74,13 @@ const Signup = () => {
 		}
 	};
 
+	const googleAuth = () => {
+		window.open(
+		  `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+		  "_self"
+		);
+	  };
+
 	return !user ? (
 		<Grow in>
 		<div className="container mt-5 mb-5  col-10 col-sm-8 col-md-6 col-lg-3">
@@ -104,14 +111,6 @@ const Signup = () => {
 			</FormControl>
 
 
-			<TextField
-					sx={{ mt: 1, ml: 1 }}
-					variant="outlined"
-					className="form-control"
-					label="Username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
 			</div>
 
 			
@@ -280,11 +279,11 @@ const Signup = () => {
 					<FormHelperText className="ml-1 mt-1">
 						{password === confirmPassword ? (
 							<span className="text-success">
-								Password does match
+								Passwords match
 							</span>
 						) : (
 							<span className="text-danger">
-								Password does not match
+								Passwords does not match
 							</span>
 						)}
 					</FormHelperText>
@@ -295,7 +294,6 @@ const Signup = () => {
 				<Button
 					variant="contained"
 					disabled={
-						!username ||
 						!email ||
 						!password ||
 						!confirmPassword ||
@@ -311,6 +309,24 @@ const Signup = () => {
 				>
 					Sign Up
 				</Button>
+				<p>or</p>
+                <Button
+                  variant="contained"
+				  disabled={
+					  !email ||
+					  !password ||
+					  !confirmPassword ||
+					  password !== confirmPassword ||
+					  !hasSixChar ||
+					  !hasLowerChar ||
+					  !hasUpperChar ||
+					  !hasNumber ||
+					  !hasSpecialChar||
+					  !userType
+				  }
+                  onClick={googleAuth}>
+                    Sign up with Google
+                </Button>
 			</div>
 			
 		</div>

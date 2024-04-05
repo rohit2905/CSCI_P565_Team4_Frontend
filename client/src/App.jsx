@@ -22,7 +22,7 @@ import OrderTracking from "./pages/OrderTrackingPage";
 import Mapview from "./pages/map";
 import ChatPage from "./pages/ChatPage";
 import Services from "./pages/Services";
-
+import AddService from "./pages/AddService";
 // functions
 import { getUser } from "./api/user";
 
@@ -87,6 +87,7 @@ const App = () => {
 						<Route exact path="/map" element = {<Mapview/>} />
 						<Route exact path="/chats" element = {<ChatPage/>} />
 						<Route path="/services" element={<Services/>} />
+						<Route path="/newservice" element={<AddService/>} />
           			</Routes>
 				
 				</UserContext.Provider>

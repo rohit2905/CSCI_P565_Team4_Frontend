@@ -20,7 +20,6 @@ const Header = () => {
 
 	
 
-
 	const handleLogout = (e) => {
 		e.preventDefault();
 
@@ -69,13 +68,12 @@ const Header = () => {
 
 			<div className="collapse navbar-collapse" id="navbarNav">
 				<ul className="navbar-nav ms-auto">
-                
     {!user ? (
         <>
             <li className="nav-item">
-                        <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
-                    </li>
-                    <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
+            </li>
+            <li className="nav-item">
                 <Link className="nav-link" style={linkStyles} to="/ordertracking">
                     Track order
                 </Link>
@@ -93,23 +91,12 @@ const Header = () => {
         </>
     ) : (
         <>
-        <li className="nav-item">
-                        <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
-                    </li>
-
             <li className="nav-item">
-                <Link className="nav-link" style={linkStyles} to="/map">
-                    Map
-                </Link>
+                <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
             </li>
-            <li className="nav-item">
+             <li className="nav-item">
                 <Link className="nav-link" style={linkStyles} to="/ordertracking">
                     Track order
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" style={linkStyles} to="/order">
-                    Place order
                 </Link>
             </li>
             <li className="nav-item">
@@ -117,11 +104,58 @@ const Header = () => {
                     Chat
                 </Link>
             </li> 
+            {usertype === "10" && (
+                <>
+                  
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/order">
+                    Place order
+                </Link>
+            </li>
+            
             <li className="nav-item">
                 <Link className="nav-link" style={linkStyles} to={userhome}>
                     My Orders
                 </Link>
-    </li>
+            </li>
+            
+                </>
+            )}
+
+            {usertype === "20" && (
+                <>
+
+                <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to={userhome}>
+                    Update Order
+                </Link>
+            </li>
+
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to={userhome}>
+                    My Orders
+                </Link>
+            </li>
+            
+                </>
+            )}
+            {usertype === "30" && (
+                <>
+                    
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/newservice">
+                    Add Service
+                </Link>
+            </li>
+            
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to={userhome}>
+                    My Orders
+                </Link>
+            </li>
+            
+                </>
+            )}
             <li className="nav-item">
                 <span
                     className="nav-link"
@@ -134,6 +168,7 @@ const Header = () => {
         </>
     )}
 </ul>
+
 
 			</div>
             <div className="dropdown">

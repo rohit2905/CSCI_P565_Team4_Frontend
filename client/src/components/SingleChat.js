@@ -28,19 +28,6 @@ import Grid from '@material-ui/core/Grid';
 const ENDPOINT = process.env.REACT_APP_API_URL;
 var socket, selectedChatCompare;
 
-// const useStyles = makeStyles((theme) => ({
-//   selected: {
-//     fontSize:"20px",
-//     pb:"3",
-//     px:"2",
-//     width:"100%",
-//     fontFamily:"Work sans",
-//     d:"flex",
-//     justifyContent: "space-between",
-//     alignItems:"center",
-//   }
-// }));
-
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -63,9 +50,16 @@ const useStyles = makeStyles({
     
     
   },
-  selected:{
-    backgroundColor: '#e0e0e0'
-  }
+  selected: {
+      fontSize:"20px",
+      pb:"3",
+      px:"2",
+      width:"100%",
+      fontFamily:"Work sans",
+      d:"flex",
+      justifyContent: "space-between",
+      alignItems:"center",
+    }
 });
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
@@ -87,11 +81,9 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
           }
           else {
             console.log(res)
-            //setUser(res.username);
-            //setUsertype(res.userType);
+            
             setCurrentUserId(res._id);
-            //setCurrentUserEmail(res.email);
-            //setCurrentUser(res)
+            
           }
         })
         return () => unsubscribe;
@@ -110,18 +102,10 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         };
   
         setLoading(true);
-  
-        // const { data } = await axios.get(
-        //   `/api/message/${selectedChat._id}`,
-        //   config
-        // );
-
-        //console.log("selectedChat::", selectedChat)
         const data = await fetchMessage({selectedChat})
 
         setMessages(data);
         setLoading(false);
-        console.log("messages::",data);
         socket.emit("join chat", selectedChat._id);
       } catch (error) {
         console.log(error);
@@ -132,9 +116,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     // Connect to socketIO
     useEffect(() => {
       socket = io(ENDPOINT)
-      //console.log("currentUserId:::", currentUserId)
       socket.emit("setup", currentUserId);
-      //console.log("user::::", user)
       
       socket.on("connected", () => {setSocketConnected(true)})
       socket.on("typing", () => setIsTyping(true));
@@ -142,11 +124,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       socket.on("stop typing", () => setIsTyping(false));
     },[])
 
-    // useEffect(() => {
-    //   socket = io(ENDPOINT)
-    //   socket.emit("setup", currentUserId);
-    //   //console.log("Connected again!!")
-    // },[currentUserId])
 
 
 
@@ -165,13 +142,10 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     useEffect(() => {
       
       socket.on('message recieved', (newMessageRecieved) => {
-        // console.log("selectedChatCompare:", selectedChatCompare)
-        // console.log("newMessageRecieved::",newMessageRecieved)
+        
         if(!selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.chat._id){
-        // //   //Give notification 
-        //console.log("Notification@@@@@")
+  
         }else{
-          //console.log("Notification@@@@@")
           setMessages([...messages, newMessageRecieved])
         }
 
@@ -181,7 +155,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
 
     const sendMessage = async (event) => {
-      //console.log("event::",selectedChat)
       if (event.key === "Enter" && newMessage) {
         socket.emit("stop typing", selectedChat._id);
         try {
@@ -192,27 +165,21 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             },
           };
           
-          // const { data } = await axios.post(
-          //   "/api/message",
-          //   {
-          //     content: newMessage,
-          //     chatId: selectedChat,
-          //   },
-          //   config
-          // );
+
           
           const data = await sendMessageAPI({newMessage,selectedChat})
           setNewMessage("");
-          //console.log("data::l",{data})
           socket.emit("new message", data);
           
           setMessages([...messages, data]);
           console.log("...messages::", messages);
+          
 
         } catch (error) {
           console.log(error)
         }
       }
+     
     }
 
 
@@ -246,15 +213,14 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
       {selectedChat?(
         <div>
           <div >
-            {/* <Button d="flex">
-            <ArrowBackIcon />
-            </Button> */}
+            
 
             {!selectedChat.isGroupChat ? (
-              <h5>  
-                {getSender(user, selectedChat.users)}
-                {/* {(selectedChat.users[0].username)} */}
-              </h5>
+              <h4>  
+                {getSender(user, selectedChat.users)}  <span style={{ fontSize: '0.4em', color: 'green' }}>(🟢 online)</span>
+
+              </h4>
+              
             ) : (
             <div width="100%">
             
@@ -283,7 +249,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         
           <Grid item xs={9}>
             
-            {/* <List className={classes.messageArea}> */}
             <ScrollToBottom className={classes.messageArea}>
             {loading ? (
               <div>
@@ -306,7 +271,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
               <div >
                 
                 <ScrollableChat messages={messages}/>
-                {isTyping?<div><ThreeDots width="30"/></div>:<></>}
+                {isTyping?<div>typing<ThreeDots width="30"/></div>:<></>}
               </div>
             )}   
             </ScrollToBottom>

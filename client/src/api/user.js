@@ -38,9 +38,9 @@ export const login = async ({userType, email, password, otp } = {}) => {
 	}
 };
 
-export const logout = async () => {
+export const logout = async (id) => {
 	try {
-		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
+		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout?id=${id}`, {
 			method: "GET",
 			credentials: "include",
 		});

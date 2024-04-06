@@ -1,6 +1,6 @@
 import React, { useState, useContext,useEffect } from "react";
 import { UserContext } from "../UserContext";
-import {getSender} from "../config/ChatLogics"
+import {getOnlineStatus, getSender} from "../config/ChatLogics"
 import Container from '@mui/material/Container';
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import TextField from '@mui/material/TextField';
@@ -217,7 +217,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
             {!selectedChat.isGroupChat ? (
               <h4>  
-                {getSender(user, selectedChat.users)}  <span style={{ fontSize: '0.4em', color: 'green' }}>(🟢 online)</span>
+                {getSender(user, selectedChat.users)}  <span style={{ fontSize: '0.4em' }}>{getOnlineStatus(user, selectedChat.users) ? "🟢 online" :"🔴 offline"}</span>
 
               </h4>
               

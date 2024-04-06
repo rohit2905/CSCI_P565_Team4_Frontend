@@ -24,8 +24,7 @@ const Header = () => {
 
     const handleLogout = (e) => {
         e.preventDefault();
-
-        logout()
+        logout(user)
             .then((res) => {
                 toast.success(res.message);
                 // set user to null

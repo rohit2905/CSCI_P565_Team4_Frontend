@@ -336,7 +336,7 @@ const Login = () => {
       </Box>
     </Container>
   ) : (
-      <Navigate to={userType === "10" ? '/Customer' : userType === "20" ? '/Driver' : '/Manager'} />
+      <Navigate to={userhome} />
   );
 };
 

@@ -167,7 +167,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
           
 
           
-          const data = await sendMessageAPI({newMessage,selectedChat})
+          const data = await sendMessageAPI({newMessage,selectedChat, user})
           setNewMessage("");
           socket.emit("new message", data);
           
@@ -270,7 +270,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             ) : (
               <div >
                 
-                <ScrollableChat messages={messages}/>
+                    <ScrollableChat messages={messages}/>
                 {isTyping?<div>typing<ThreeDots width="30"/></div>:<></>}
               </div>
             )}   

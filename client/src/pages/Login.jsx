@@ -317,9 +317,13 @@ const Login = () => {
         </Grid>
       </Box>
     </Container>
-  ) : (
-    <Navigate to={'../Customer'}/>
-  );
+  ) : userType === 10 ? (
+  <Navigate to={'../Customer'}/>
+) : userType === 20 ? (
+  <Navigate to={'../Driver'}/>
+) : userType === 30 ? (
+  <Navigate to={'../Manager'}/>
+) : null;
 };
 
 export default Login;

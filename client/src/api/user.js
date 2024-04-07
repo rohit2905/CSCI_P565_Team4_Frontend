@@ -38,6 +38,16 @@ export const login = async ({userType, email, password, otp } = {}) => {
 	}
 };
 
+export const registerGoogle = async () => {
+	try {
+		const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+		const { data } = await axios.get(url, { withCredentials: true });
+		register("10", data.user.name, data.user.email, data.user.password);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 export const logout = async () => {
 	try {
 		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {

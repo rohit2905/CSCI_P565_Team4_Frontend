@@ -32,6 +32,7 @@ import Container from '@mui/material/Container';
 
 // functions
 import { register } from "../api/user";
+import { registerGoogle } from "../api/user";
 
 const Signup = () => {
 	const history = useNavigate();

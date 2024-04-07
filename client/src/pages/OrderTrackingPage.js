@@ -34,7 +34,7 @@ export class OrderTracking extends React.Component {
  
             // Get latitude & longitude of driver location.
             // TODO: please remember, this api key is not a valid one, change it while implementings
-            Geocode.setApiKey("AIzaSyAKVV1sXGF9GELokvPav-U4xS0sSmRpoAo");
+          Geocode.setApiKey("AIzaSyACybbAcszV_rSnDy38jbbjsWDDw1mT0wo");
             Geocode.setLanguage("en");
             Geocode.setRegion("us");
             Geocode.setLocationType("ROOFTOP");
@@ -201,5 +201,5 @@ export class OrderTracking extends React.Component {
 }
 // TODO: use a valid api-key
 export default GoogleApiWrapper({
-    apiKey: "AIzaSyAKVV1sXGF9GELokvPav-U4xS0sSmRpoAo"
+    apiKey: "AIzaSyACybbAcszV_rSnDy38jbbjsWDDw1mT0wo"
     })(OrderTracking);

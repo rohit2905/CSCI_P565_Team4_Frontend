@@ -109,6 +109,14 @@ const Login = () => {
       setCaptchaReq(true);
     }
   };
+
+  const googleAuth = () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+      "_self"
+    );
+  };
+
   return !user ? (
     <Container component="main" maxWidth="lg">
       
@@ -299,6 +307,16 @@ const Login = () => {
                 >
                   Log In
                 </Button>
+                <p>or</p>
+                <Button
+                  autoFocus
+                  fullWidth
+                  variant="contained"
+                  disables={!otp}
+                  onClick={googleAuth}
+                  sx={{ mt: 3, mb: 2}}>
+                    Sign in with Google
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="/resetpassword" variant="body2">
@@ -317,13 +335,11 @@ const Login = () => {
         </Grid>
       </Box>
     </Container>
-  ) : userType === 10 ? (
-  <Navigate to={'../Customer'}/>
-) : userType === 20 ? (
-  <Navigate to={'../Driver'}/>
-) : userType === 30 ? (
-  <Navigate to={'../Manager'}/>
-) : null;
+
+  ) : (
+      <Navigate to={userhome} />
+  );
+
 };
 
 export default Login;

@@ -104,7 +104,7 @@ export class Mapview extends React.Component {
     
         if(this.state.repeat >0){
             // Get latitude & longitude from address.
-            Geocode.setApiKey("AIzaSyAKVV1sXGF9GELokvPav-U4xS0sSmRpoAo");
+          Geocode.setApiKey("AIzaSyACybbAcszV_rSnDy38jbbjsWDDw1mT0wo");
             Geocode.setLanguage("en");
             Geocode.setRegion("us");
             Geocode.setLocationType("ROOFTOP");
@@ -204,5 +204,5 @@ export class Mapview extends React.Component {
 
 //{user && <span className="text-success">{user}'s</span>}{" "}
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyAKVV1sXGF9GELokvPav-U4xS0sSmRpoAo"
+  apiKey: "AIzaSyACybbAcszV_rSnDy38jbbjsWDDw1mT0wo"
   })(Mapview);

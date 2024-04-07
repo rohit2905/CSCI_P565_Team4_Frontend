@@ -38,9 +38,9 @@ export const login = async ({userType, email, password, otp } = {}) => {
 	}
 };
 
-export const logout = async () => {
+export const logout = async (id) => {
 	try {
-		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
+		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout?id=${id}`, {
 			method: "GET",
 			credentials: "include",
 		});
@@ -425,12 +425,11 @@ export const groupRemove = async ({selectedChat,user1} = {}) => {
 };
 
 
-export const sendMessageAPI = async ({newMessage,selectedChat} = {}) => {
+export const sendMessageAPI = async ({newMessage,selectedChat, user} = {}) => {
 	
-	console.log("content::", newMessage)
+	console.log("content::", user)
 	const content = newMessage
     const chatId = selectedChat._id
-	
 	
 	try {
 		const res = await fetch(`${process.env.REACT_APP_API_URL}/message`, {
@@ -442,7 +441,7 @@ export const sendMessageAPI = async ({newMessage,selectedChat} = {}) => {
 			},
 			
 			
-			body: JSON.stringify({content, chatId}),
+			body: JSON.stringify({content, chatId, user}),
 
 
 			});

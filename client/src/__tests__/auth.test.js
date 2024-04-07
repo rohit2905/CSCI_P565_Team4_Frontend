@@ -130,7 +130,7 @@ describe('logout function', () => {
         const response = await logout();
 
         // Check that fetch was called with the correct URL and options
-        expect(fetch).toHaveBeenCalledWith(`${process.env.REACT_APP_API_URL}/logout`, {
+        expect(fetch).toHaveBeenCalledWith(`${process.env.REACT_APP_API_URL}/logout?id=undefined`, {
             method: "GET",
             credentials: "include",
         });

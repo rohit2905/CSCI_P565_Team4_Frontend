@@ -118,6 +118,13 @@ const Login = () => {
     );
   };
 
+  const facebookAuth = () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/auth/facebook/callback`,
+      "_self"
+    );
+  };
+
   return !user ? (
     <Container component="main" maxWidth="lg">
       
@@ -322,15 +329,33 @@ const Login = () => {
                     <span style={{ padding: '0 10px', color: 'rgba(0, 0, 0, 0.54)', textTransform: 'uppercase', fontSize: '12px', backgroundColor: 'white' }}>or</span>
                   </Divider>
                 </div>
-                <Button
-                  autoFocus
-                  variant="contained"
-                  onClick={googleAuth}
-                  sx={{ mt: 3, mb: 2, backgroundColor: 'white', color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.54)', '&:hover': { backgroundColor: '#f1f1f1' } }}
-                >
-                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
-                  Sign in
-                </Button>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                  <Button
+                    autoFocus
+                    variant="contained"
+                    onClick={googleAuth}
+                    sx={{ backgroundColor: 'white', color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.54)', '&:hover': { backgroundColor: '#f1f1f1' } }}
+                  >
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+                    Sign in
+                  </Button>
+                  <Button
+                    autoFocus
+                    variant="contained"
+                    onClick={facebookAuth}
+                    sx={{ backgroundColor: 'white', color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.54)', '&:hover': { backgroundColor: '#f1f1f1' } }}
+                  >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+                    Sign in
+                  </Button>
+                </div>
+                <Divider
+                  sx={{
+                    flexGrow: 1,
+                    height: '1px',
+                    margin: '12px 0',
+                  }}
+                />
                 <Grid container>
                   <Grid item xs>
                     <Link href="/resetpassword" variant="body2">

@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 // design
 import {
   Button,
+  Divider,
   FormControl,
   IconButton,
   InputAdornment,
@@ -307,15 +308,28 @@ const Login = () => {
                 >
                   Log In
                 </Button>
-                <p>or</p>
+                <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                  <Divider
+                    sx={{
+                      width: '100%',
+                      height: '1px',
+                      margin: '12px 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <span style={{ padding: '0 10px', color: 'rgba(0, 0, 0, 0.54)', textTransform: 'uppercase', fontSize: '12px', backgroundColor: 'white' }}>or</span>
+                  </Divider>
+                </div>
                 <Button
                   autoFocus
-                  fullWidth
                   variant="contained"
-                  disables={!otp}
                   onClick={googleAuth}
-                  sx={{ mt: 3, mb: 2}}>
-                    Sign in with Google
+                  sx={{ mt: 3, mb: 2, backgroundColor: 'white', color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.54)', '&:hover': { backgroundColor: '#f1f1f1' } }}
+                >
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+                  Sign in
                 </Button>
                 <Grid container>
                   <Grid item xs>

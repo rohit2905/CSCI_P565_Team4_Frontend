@@ -120,7 +120,7 @@ const Login = () => {
 
   const facebookAuth = () => {
     window.open(
-      `${process.env.REACT_APP_API_URL}/auth/facebook/callback`,
+      `${process.env.REACT_APP_API_URL}/facebook/callback`,
       "_self"
     );
   };

@@ -10,8 +10,6 @@ import {
 	TextField,
 	InputAdornment,
 	IconButton,
-	OutlinedInput,
-	StandardInput,
 	FormControl,
 	InputLabel,
 	Button,
@@ -27,9 +25,6 @@ import Grow from '@mui/material/Grow';
 import Input from '@mui/material/Input';
 
 
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-
 // functions
 import { register } from "../api/user";
 
@@ -44,6 +39,8 @@ const Signup = () => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 	const [userType, setUserType] = useState("");
+	const [securityQuestion, setSecurityQuestion] = useState("");
+	const [securityAnswer, setSecurityAnswer] = useState("");
 
 	// password validation
 	let hasSixChar = password.length >= 6;
@@ -52,284 +49,290 @@ const Signup = () => {
 	let hasNumber = /(.*[0-9].*)/.test(password);
 	let hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(password);
 
+	// Security Questions
+	const securityQuestions = [
+		"What is your mother's maiden name?",
+		"What is the name of your first pet?",
+		"In what city were you born?"
+	];
+
 	const handleRegister = async (e) => {
 		e.preventDefault();
 
 		try {
-			//toast.success("Sumbit clicked: " + email + " " + username + " " + userType);
-			//let navigate = useNavigate();
-			//navigate("../login", { replace: true });
-
-			const res = await register({userType, username, email, password });
+			const res = await register({ userType, username, email, password, securityQuestion, securityAnswer });
 			if (res.error) toast.error(res.error);
 			else {
 				toast.success(res.message);
 				// redirect the user to login
-
 				history("/login");
-				
 			}
 		} catch (err) {
 			toast.error(err);
 		}
 	};
-
-	const googleAuth = () => {
-		window.open(
-		  `${process.env.REACT_APP_API_URL}/auth/google/callback`,
-		  "_self"
-		);
-	  };
-
 	return !user ? (
 		<Grow in>
-		<div className="container mt-5 mb-5  col-10 col-sm-8 col-md-6 col-lg-3">
-      
-		
+			<div className="container mt-5 mb-5  col-10 col-sm-8 col-md-6 col-lg-3">
+				<div className="text-center mb-2 alert ">
+					<label htmlFor="" className="h2">
+						Sign Up
+					</label>
+				</div>
 
-			<div className="text-center mb-2 alert ">
-				<label htmlFor="" className="h2">
-					Sign Up
-				</label>
-			</div>
+				<div>
+					<FormControl variant="outlined" sx={{ m: 1, width: '20ch' }} fullWidth>
+						<InputLabel id="demo-simple-select-label">Type of User</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={userType}
+							label="Type of User"
+							onChange={(e) => setUserType(e.target.value)}
+						>
+							<MenuItem value={10}>Customer</MenuItem>
+							<MenuItem value={20}>Driver</MenuItem>
+							<MenuItem value={30}>Manager</MenuItem>
+						</Select>
+					</FormControl>
+				</div>
 
-			
-			<div>
-			<FormControl variant="outlined" sx={{ m: 1, width: '20ch' }} fullWidth>
-				<InputLabel id="demo-simple-select-label">Type of User</InputLabel>
-				<Select
-					labelId="demo-simple-select-label"
-					id="demo-simple-select"
-					value={userType}
-					label="Type of User"
-					onChange={(e) => setUserType(e.target.value)}
-				>
-					<MenuItem value={10}>Customer</MenuItem>
-					<MenuItem value={20}>Driver</MenuItem>
-					<MenuItem value={30}>Manager</MenuItem>
-				</Select>
-			</FormControl>
-
-
-			</div>
-
-			
-			
-			
-			<div className="form-group">
-				<TextField
-					sx={{ m: 1 }}
-					size="small"
-					variant="outlined"
-					className="form-control"
-					label="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-			</div>
-
-
-			<div className="form-group">
-				<FormControl
-					sx={{ m: 1 }}
-					variant="outlined"
-					size="small"
-					className="form-control"
-				>
-					<InputLabel>Password</InputLabel>
-					<Input
-						
-						label="Password"
-						type={showPassword ? "text" : "password"}
-						value={password}
+				<div className="form-group">
+					<TextField
+						sx={{ m: 1 }}
+						size="small"
 						variant="outlined"
-						onChange={(e) => setPassword(e.target.value)}
-						endAdornment={
-							<InputAdornment position="end">
-								<IconButton
-									edge="end"
-									onClick={() =>
-										setShowPassword(!showPassword)
-									}
-								>
-									{showPassword ? (
-										<VisibilityIcon />
-									) : (
-										<VisibilityOffIcon />
-									)}
-								</IconButton>
-							</InputAdornment>
-						}
+						className="form-control"
+						label="Email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
 					/>
-				</FormControl>
+				</div>
+
+				{/* Password Field */}
+				<div className="form-group">
+					<FormControl
+						sx={{ m: 1 }}
+						variant="outlined"
+						size="small"
+						className="form-control"
+					>
+						<InputLabel>Password</InputLabel>
+						<Input
+							label="Password"
+							type={showPassword ? "text" : "password"}
+							value={password}
+							variant="outlined"
+							onChange={(e) => setPassword(e.target.value)}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										edge="end"
+										onClick={() =>
+											setShowPassword(!showPassword)
+										}
+									>
+										{showPassword ? (
+											<VisibilityIcon />
+										) : (
+											<VisibilityOffIcon />
+										)}
+									</IconButton>
+								</InputAdornment>
+							}
+						/>
+					</FormControl>
+
+					{/* Password Strength Indicators */}
+					{password && (
+						<div className="ml-1" style={{ columns: 2 }}>
+							{/* Password length */}
+							<div>
+								{hasSixChar ? (
+									<span className="text-success">
+										<CheckCircleIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>at least 6 characters</small>
+									</span>
+								) : (
+									<span className="text-danger">
+										<CancelIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>at least 6 characters</small>
+									</span>
+								)}
+							</div>
+							<div>
+								{hasLowerChar ? (
+									<span className="text-success">
+										<CheckCircleIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one lowercase</small>
+									</span>
+								) : (
+									<span className="text-danger">
+										<CancelIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one lowercase</small>
+									</span>
+								)}
+							</div>
+							<div>
+								{hasUpperChar ? (
+									<span className="text-success">
+										<CheckCircleIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one uppercase</small>
+									</span>
+								) : (
+									<span className="text-danger">
+										<CancelIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one uppercase</small>
+									</span>
+								)}
+							</div>
+							<div>
+								{hasNumber ? (
+									<span className="text-success">
+										<CheckCircleIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one number</small>
+									</span>
+								) : (
+									<span className="text-danger">
+										<CancelIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one number</small>
+									</span>
+								)}
+							</div>
+							<div>
+								{hasSpecialChar ? (
+									<span className="text-success">
+										<CheckCircleIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one special symbol</small>
+									</span>
+								) : (
+									<span className="text-danger">
+										<CancelIcon
+											className="mr-1"
+											fontSize="small"
+										/>
+										<small>one special symbol</small>
+									</span>
+								)}
+							</div>
+						
+						</div>
+					)}
+				</div>
+
+				{/* Confirm Password Field */}
+				<div className="form-group">
+					<TextField
+						sx={{ m: 1 }}
+						size="small"
+						type="password"
+						variant="outlined"
+						className="form-control"
+						label="Confirm Password"
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
+					/>
+					{/* Confirm Password match check */}
+					{password && confirmPassword && (
+						<FormHelperText className="ml-1 mt-1">
+							{password === confirmPassword ? (
+								<span className="text-success">
+									Passwords match
+								</span>
+							) : (
+								<span className="text-danger">
+									Passwords do not match
+								</span>
+							)}
+						</FormHelperText>
+					)}
+				</div>
+
+				{/* Security Question Dropdown */}
+				<div className="form-group">
+					<FormControl variant="outlined" sx={{ m: 1, width: '100%' }} fullWidth>
+						<InputLabel id="security-question-label">Security Question</InputLabel>
+						<Select
+							labelId="security-question-label"
+							id="security-question"
+							value={securityQuestion}
+							label="Security Question"
+							onChange={(e) => setSecurityQuestion(e.target.value)}
+						>
+							{securityQuestions.map((question, index) => (
+								<MenuItem key={index} value={question}>{question}</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</div>
 
 
-				{password && (
-					<div className="ml-1" style={{ columns: 2 }}>
-						<div>
-							{hasSixChar ? (
-								<span className="text-success">
-									<CheckCircleIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>at least 6 characters</small>
-								</span>
-							) : (
-								<span className="text-danger">
-									<CancelIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>at least 6 characters</small>
-								</span>
-							)}
-						</div>
-						<div>
-							{hasLowerChar ? (
-								<span className="text-success">
-									<CheckCircleIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one lowercase</small>
-								</span>
-							) : (
-								<span className="text-danger">
-									<CancelIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one lowercase</small>
-								</span>
-							)}
-						</div>
-						<div>
-							{hasUpperChar ? (
-								<span className="text-success">
-									<CheckCircleIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one uppercase</small>
-								</span>
-							) : (
-								<span className="text-danger">
-									<CancelIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one uppercase</small>
-								</span>
-							)}
-						</div>
-						<div>
-							{hasNumber ? (
-								<span className="text-success">
-									<CheckCircleIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one number</small>
-								</span>
-							) : (
-								<span className="text-danger">
-									<CancelIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one number</small>
-								</span>
-							)}
-						</div>
-						<div>
-							{hasSpecialChar ? (
-								<span className="text-success">
-									<CheckCircleIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one special symbol</small>
-								</span>
-							) : (
-								<span className="text-danger">
-									<CancelIcon
-										className="mr-1"
-										fontSize="small"
-									/>
-									<small>one special symbol</small>
-								</span>
-							)}
-						</div>
+				{/* Security Answer Field */}
+				{securityQuestion && (
+					<div className="form-group">
+						<TextField
+							sx={{ m: 1 }}
+							size="small"
+							variant="outlined"
+							className="form-control"
+							label="Security Answer"
+							value={securityAnswer}
+							onChange={(e) => setSecurityAnswer(e.target.value)}
+						/>
 					</div>
 				)}
-			</div>
-			<div className="form-group">
-				<TextField
-					sx={{ m: 1 }}
-					size="small"
-					type="password"
-					variant="outlined"
-					className="form-control"
-					label="Confirm Password"
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-				/>
-				{password && confirmPassword && (
-					<FormHelperText className="ml-1 mt-1">
-						{password === confirmPassword ? (
-							<span className="text-success">
-								Passwords match
-							</span>
-						) : (
-							<span className="text-danger">
-								Passwords does not match
-							</span>
-						)}
-					</FormHelperText>
-				)}
-			</div>
 
-			<div className="text-center mt-4">
-				<Button
-					variant="contained"
-					disabled={
-						!email ||
-						!password ||
-						!confirmPassword ||
-						password !== confirmPassword ||
-						!hasSixChar ||
-						!hasLowerChar ||
-						!hasUpperChar ||
-						!hasNumber ||
-						!hasSpecialChar||
-						!userType
-					}
-					onClick={handleRegister}
-				>
-					Sign Up
-				</Button>
-				<p>or</p>
-                <Button
-                  variant="contained"
-				  disabled={
-					  !email ||
-					  !password ||
-					  !confirmPassword ||
-					  password !== confirmPassword ||
-					  !hasSixChar ||
-					  !hasLowerChar ||
-					  !hasUpperChar ||
-					  !hasNumber ||
-					  !hasSpecialChar||
-					  !userType
-				  }
-                  onClick={googleAuth}>
-                    Sign up with Google
-                </Button>
+				<div className="text-center mt-4">
+					<Button
+						variant="contained"
+						disabled={
+							!email ||
+							!password ||
+							!confirmPassword ||
+							password !== confirmPassword ||
+							!hasSixChar ||
+							!hasLowerChar ||
+							!hasUpperChar ||
+							!hasNumber ||
+							!hasSpecialChar ||
+							!userType ||
+							!securityQuestion ||
+							!securityAnswer
+						}
+						onClick={handleRegister}
+					>
+						Sign Up
+					</Button>					
+				</div>
+
 			</div>
-			
-		</div>
 		</Grow>
 	) : (
 		<Navigate to="/" />

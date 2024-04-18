@@ -160,17 +160,6 @@ const Header = () => {
 
                                 </>
                             )}
-
-                            {/* <li className="nav-item">
-
-                <span
-                    className="nav-link"
-                    style={{ cursor: "pointer", ...linkStyles }}
-                    onClick={handleLogout}
-                >
-                    Logout
-                </span>
-            </li> */}
                             <li className="nav-item">
                                 <div className="dropdown">
                                     <button className="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ background: 'transparent', border: 'none' }}>
@@ -186,14 +175,6 @@ const Header = () => {
                         </>
                     )}
                 </ul>
-
-
-
-
-
-
-
-
                 <div className="dropdown">
                     <button
                         className="btn btn-secondary dropdown-toggle"
@@ -205,7 +186,6 @@ const Header = () => {
                         style={{ background: 'transparent', border: 'none' }}>
                         <FaPaintBrush /> Switch Theme {/* Use the icon component */}
                     </button>
-                </div>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <button className="dropdown-item" onClick={() => changeNavColor('#fe9e0d')}>Orange (default)</button>
                     <button className="dropdown-item" onClick={() => changeNavColor('#708090')}>Slate Gray</button>
@@ -214,8 +194,9 @@ const Header = () => {
                     <button className="dropdown-item" onClick={() => changeNavColor('#483D8B')}>Dark Slate Blue</button>
                     <button className="dropdown-item" onClick={() => changeNavColor('#696969')}>Dim Gray</button>
                 </div>
+                </div>
             </div>
-
+   
         </nav>
     )
 };

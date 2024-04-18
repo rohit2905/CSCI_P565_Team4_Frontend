@@ -106,7 +106,7 @@ const Order = () => {
 		carriers.forEach(carrier => {
 			if (Size === carrier.Dimension) {
 			const key = `${carrier.CarrierName} - ${carrier.ServiceType}`; // Unique key
-			tempCosts[key] = parseInt(parseInt(Weight) + ((distance) / 2 * priority * carrier.Price));
+			tempCosts[key] = parseInt(parseInt(Weight) + ((distance) / 2 * priority * (carrier.Price)/2));
 			}
 		});
 		console.log(tempCosts);

@@ -117,11 +117,35 @@ const Header = () => {
                     Chat
                 </Link>
             </li> 
+            {/* <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/dashboard">
+                    My Statistics
+                </Link>
+            </li>  */}
+            {usertype === "10"&&(
+                <li className="nav-item">
+                    <Link className="nav-link" style={linkStyles} to="/dashboard">
+                         My Statistics
+                    </Link>
+                </li>
+            )}
+            {usertype === "20" && (
+                <li className="nav-item">
+                    <Link className="nav-link" style={linkStyles} to="/dashboard">
+                        My Statistics
+                    </Link>
+                </li>
+            )}
+            {usertype === "30" && (
+                <li className="nav-item">
+                    <Link className="nav-link" style={linkStyles} to="/dashboard3">
+                        My statistics
+                    </Link>
+                </li>)}
             <li className="nav-item">
                 <Link className="nav-link" style={linkStyles} to={userhome}>
                     My Orders
-                </Link>
-                 </li>
+                </Link></li>
             {/* <li className="nav-item">
                 <span
                     className="nav-link"

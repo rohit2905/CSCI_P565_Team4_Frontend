@@ -13,7 +13,8 @@ const Services = () => {
     const [filters, setFilters] = useState({
         ServiceType: '',
         CarrierName: '',
-        Dimension: ''
+        Dimension: '',
+        PriceRange:''
     });
     const [searchText, setSearchText] = useState('');
     const [searchClicked, setSearchClicked] = useState(false);

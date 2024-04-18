@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 import { UserContext } from "../../../UserContext";
-import {readuserorders, orderupdate } from "../../../api/user";
+import {readuserorders, orderupdate ,getRatings,updateRating} from "../../../api/user";
 //import icon from '.../public/logo512.png';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -41,7 +41,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const CustomerHome = () => {
-	const { user, usertype, useremail } = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
+    const { usertype, setUsertype } = useContext(UserContext);
+    const { useremail, setUseremail } = useContext(UserContext);
 	const history = useNavigate();
 
 	const [users, setUsers] = useState([]);
@@ -62,6 +64,25 @@ const CustomerHome = () => {
 	const [TrackingID_u,setTrackingID_u] = useState("");
 	const [OrderStatus_u,setOrderStatus_u] = useState("");
 
+	const [ratings,setRatings] = useState([])
+	const [newRating, setNewRating] = useState('');
+	const [newReview, setNewReview] = useState('');
+
+    const handleCreateRating = async(trackingId) => {
+		// console.log("in handle",trackingId,useremail,newRating,"example review 1")
+		const x="example review 1"
+        const res = await updateRating({ TrackingID: trackingId, email: useremail, rating: newRating, review :""});
+        setNewRating('');
+    };
+	const handleCreateReview = async(trackingId) => {
+		// console.log("in handle",trackingId,useremail,newRating,"example review 1")
+		const x="example review 1"
+        const res = await updateRating({ TrackingID: trackingId, email: useremail, rating: 0, review :newReview});
+        setNewReview('');
+    };
+	useEffect(()=>{
+		console.log("")
+	},[newRating])
 	// console.log(user,usertype,useremail);
 	const fetchOrders = async () => {
 		// Event.preventDefault();
@@ -90,12 +111,15 @@ const CustomerHome = () => {
 		}
 	};
 
-	// useEffect(() => {
-	// 		fetchOrders();
-	// }, []);
+	useEffect(() => {
+		fetchOrders();
+			getRatings_here();
+			console.log(useremail,"eamin in effect")
+	}, []);
 
 	useEffect(() => {
 			fetchOrders();
+			getRatings_here();
 	}, [page, rowsPerPage,showtable,refresh,buttoncolor]);
 
 
@@ -120,7 +144,13 @@ const CustomerHome = () => {
 			}
 			setRefresh(Math.random());
 	};
-
+	const getRatings_here= async () => {
+		// console.log("getratings home")
+		const res = await getRatings({email: useremail,});
+			// console.log("jhfdnm,in getRatings")
+			setRatings(res);
+			console.log(res)
+	};
 	if(usertype == 10){
 	return (
 			<div className="bg-light vh-100">
@@ -139,11 +169,13 @@ const CustomerHome = () => {
 												<StyledTableCell><b>Index</b></StyledTableCell>
 												<StyledTableCell><b>Tracking ID</b></StyledTableCell>
 												<StyledTableCell><b>Customer</b></StyledTableCell>
-												<StyledTableCell><b>From Address</b></StyledTableCell>
+												{/* <StyledTableCell><b>From Address</b></StyledTableCell> */}
 												<StyledTableCell><b>To Address</b></StyledTableCell>
 												<StyledTableCell><b>Driver</b></StyledTableCell>
 												<StyledTableCell><b>Order Status</b></StyledTableCell>
-												<StyledTableCell><b>Present location</b></StyledTableCell>		
+												<StyledTableCell><b>Present location</b></StyledTableCell>
+												<StyledTableCell><b>Rate</b></StyledTableCell>
+												<StyledTableCell><b>Review</b></StyledTableCell>		
 											</TableRow>
 										</TableHead>
 										<TableBody>
@@ -153,11 +185,76 @@ const CustomerHome = () => {
 														<TableCell>{index + 1}</TableCell>
 														<TableCell>{TrackingID}</TableCell>
 														<TableCell>{Customer}</TableCell>
-														<TableCell>{Address_f}</TableCell>
+														{/* <TableCell>{Address_f}</TableCell> */}
 														<TableCell>{Address_t}</TableCell>
 														<TableCell>{Driver}</TableCell>
 														<TableCell>{OrderStatus}</TableCell>
 														<TableCell>{Location}</TableCell>
+														
+														<TableCell>
+    {ratings.some((rating) => rating.tracking_id === TrackingID) ? (
+        ratings
+            .filter((rating) => rating.tracking_id === TrackingID)
+            .map((p, index) => (
+                <TextField
+                    key={index}
+                    type="number"
+                    value={p.rating}
+                    inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
+                    disabled // To prevent editing the rating directly
+                />
+            ))
+    ) : (
+        <div key={index}>
+            <TextField
+                type="number"
+                value={newRating}
+                onChange={(event) => setNewRating(event.target.value)}
+                inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
+            />
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleCreateRating(TrackingID)}
+            >
+                Rate
+            </Button>
+        </div>
+    )}
+</TableCell>
+<TableCell>
+    {ratings.some((rating) => rating.tracking_id === TrackingID) ? (
+        ratings
+            .filter((rating) => rating.tracking_id === TrackingID)
+            .map((p, index) => (
+                <TextField
+                    key={index}
+                    type="text"
+                    value={p.review_comment}
+                    inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
+                    disabled // To prevent editing the rating directly
+                />
+            ))):(<div key={index}>
+					<TextField
+						type="text"
+						value={newReview}
+						onChange={(event) => setNewReview(event.target.value)}
+						inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
+					/>
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={() => handleCreateReview(TrackingID)}
+					>
+						Rate
+					</Button>
+				</div>)
+			
+		}
+</TableCell>
+
+
+
 													</TableRow>
 												)
 											)}
@@ -212,5 +309,4 @@ else{
 
 return null;
 };
-//{user && <span className="text-success">{user}'s</span>}{" "}
 export default CustomerHome;

@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 import { UserContext } from "../../../UserContext";
-import { readusers, readorders, orderupdate, adduseraccess } from "../../../api/user";
+import { readusers, readorders, orderupdate, adduseraccess ,getRatings} from "../../../api/user";
 //import icon from '.../public/logo512.png';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -41,7 +41,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const ManagerHome = () => {
-	const { user, usertype } = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
+    const { usertype, setUsertype } = useContext(UserContext);
+    const { useremail, setUseremail } = useContext(UserContext);
 	const history = useNavigate();
 
 	const [users, setUsers] = useState([]);
@@ -107,7 +109,7 @@ const ManagerHome = () => {
 	const [OrderStatus_u,setOrderStatus_u] = useState("");
 	const [Location_u,setLocation_u] = useState("");
 	const [buttoncolor,setButtoncolor] = useState("Customers");
-
+	const [ratings,setRatings]=useState([]);
 	const fetchUsers = async () => {
 		try {
 			const { users, count, error } = await readusers({
@@ -155,10 +157,17 @@ const ManagerHome = () => {
 			setSnackbarMessage(error.message);
 		}
 	};
-
+	const getRatings_here= async () => {
+		// console.log("getratings home")
+		const res = await getRatings({email: useremail,});
+			// console.log("jhfdnm,in getRatings")
+			setRatings(res);
+			console.log(res)
+	};
 	useEffect(() => {
 		if(showtable == "4"){
 			fetchOrders();
+			getRatings_here();
 		}
 		else{
 			fetchUsers();
@@ -474,7 +483,9 @@ const ManagerHome = () => {
 												<StyledTableCell><b>To Address</b></StyledTableCell>
 												<StyledTableCell><b>Driver</b></StyledTableCell>
 												<StyledTableCell><b>Order Status</b></StyledTableCell>
-												<StyledTableCell><b>Present location</b></StyledTableCell>		
+												<StyledTableCell><b>Present location</b></StyledTableCell>	
+												<StyledTableCell><b>Rating</b></StyledTableCell>	
+												<StyledTableCell><b>Review</b></StyledTableCell>		
 											</TableRow>
 										</TableHead>
 										<TableBody>
@@ -489,6 +500,27 @@ const ManagerHome = () => {
 														<TableCell>{Driver}</TableCell>
 														<TableCell>{OrderStatus}</TableCell>
 														<TableCell>{Location}</TableCell>
+														<TableCell>
+    {ratings.some((rating) => rating.tracking_id === TrackingID) ? (
+        ratings
+            .filter((rating) => rating.tracking_id === TrackingID)
+            .map((p, index) => (
+                <p>{p.rating}</p>
+            ))
+    ) : <p>No Ratings</p>}
+    
+</TableCell>
+<TableCell>
+    {ratings.some((rating) => rating.tracking_id === TrackingID) ? (
+        ratings
+            .filter((rating) => rating.tracking_id === TrackingID)
+            .map((p, index) => (
+                <p>{p.review_comment}</p>
+            ))
+    ) : <p>No Reviews</p>}
+    
+</TableCell>
+
 													</TableRow>
 												)
 											)}

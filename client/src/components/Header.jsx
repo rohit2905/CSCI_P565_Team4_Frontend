@@ -199,7 +199,7 @@ const Header = () => {
                     <span className="dropdown-item" onClick={handleLogout} style={{ cursor: "pointer" }}>Logout</span>
                 </div>
             </div>           
-             </li>
+</li>
 
                         </>
                     )}

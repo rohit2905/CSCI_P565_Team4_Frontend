@@ -1,6 +1,7 @@
+import axios from 'axios';
 
-export const register = async ({userType, username, email, password } = {}) => {
-	const user = {userType, username, email, password };
+export const register = async ({ userType, username, email, password, securityQuestion, securityAnswer } = {}) => {
+	const user = { userType, username, email, password, securityQuestion, securityAnswer };
 
 	try {
 		const res = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
@@ -18,6 +19,48 @@ export const register = async ({userType, username, email, password } = {}) => {
 	}
 };
 
+export const getSecurityQuestion = async (email) => {
+	try {
+		// Make an HTTP GET request to the API endpoint with the email as a query parameter
+		const response = await axios.get(`${process.env.REACT_APP_API_URL}/security-question`, { params: { email } });
+
+		// If the request is successful, return the security question from the response
+		return response.data.securityQuestion;
+	} catch (error) {
+		// If an error occurs, handle it appropriately
+		console.error("Error getting security question:", error);
+		throw new Error("Failed to retrieve security question.");
+	}
+};
+
+export const validateSecurityAnswer = async (email, securityAnswer) => {
+	try {
+		// Make an HTTP POST request to the API endpoint with the email and answer in the request body
+		const response = await axios.post(`${process.env.REACT_APP_API_URL}/validate-security-answer`, { email, securityAnswer });
+
+		// If the request is successful, return true or false based on the response
+		return response.data.isValid;
+	} catch (error) {
+		// If an error occurs, handle it appropriately
+		console.error("Error validating security answer:", error);
+		throw new Error("Failed to validate security answer.");
+	}
+};
+
+
+export const verifyEmail = async (email, userType) => {
+	try {
+		// Make an HTTP GET request to the API endpoint with the email as a query parameter
+		const response = await axios.get(`${process.env.REACT_APP_API_URL}/verify-email`, { params: { email, userType } });
+
+		// If the request is successful, return true or false based on the response
+		return response.data.isVerified;
+	} catch (error) {
+		// If an error occurs, handle it appropriately
+		console.error("Error verifying email:", error);
+		throw new Error("Failed to verify email.");
+	}
+};
 
 export const login = async ({userType, email, password, otp } = {}) => {
 	const user = {userType, email, password, otp };
@@ -38,9 +81,9 @@ export const login = async ({userType, email, password, otp } = {}) => {
 	}
 };
 
-export const logout = async () => {
+export const logout = async (id) => {
 	try {
-		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout`, {
+		const res = await fetch(`${process.env.REACT_APP_API_URL}/logout/${id}`, {
 			method: "GET",
 			credentials: "include",
 		});
@@ -503,12 +546,11 @@ export const groupRemove = async ({selectedChat,user1} = {}) => {
 };
 
 
-export const sendMessageAPI = async ({newMessage,selectedChat} = {}) => {
+export const sendMessageAPI = async ({newMessage,selectedChat, user} = {}) => {
 	
-	console.log("content::", newMessage)
+	console.log("content::", user)
 	const content = newMessage
     const chatId = selectedChat._id
-	
 	
 	try {
 		const res = await fetch(`${process.env.REACT_APP_API_URL}/message`, {
@@ -520,7 +562,7 @@ export const sendMessageAPI = async ({newMessage,selectedChat} = {}) => {
 			},
 			
 			
-			body: JSON.stringify({content, chatId}),
+			body: JSON.stringify({content, chatId, user}),
 
 
 			});

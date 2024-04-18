@@ -2,6 +2,10 @@ export const getSender = (loggedUser, users) => {
     return users[0].username === loggedUser ? users[1].username : users[0].username
   };
 
+export const getOnlineStatus = (loggedUser, users) => {
+  return users[0].username === loggedUser ? users[1].is_online : users[0].is_online
+};
+
 
 export const isSameSender = (messages, m, i, userId) => {
     return (

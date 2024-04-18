@@ -46,19 +46,19 @@ const ScrollableChat = ({messages}) => {
         
             {messages && messages.map((m,i) => (
                 <div key = {m._id}>
-                    {/* {console.log("m:::::",m)} */}
+                
                     <span style={{backgroundColor: `${
                         m.sender._id === currentUserId ? "#B9F5D0" : "#BEE3F8"
                     }`,
                     marginLeft: isSameSenderMargin(messages, m, i, currentUserId),
                     marginTop:10,//isSameUser(messages, m, i, currentUserId)? 3:100,
-                    borderRadius: "13px",
+                    borderRadius: "8px",
                     padding: "3px 15px",
                     maxWidth: "75%",  
                     
                 
-                    }}>                   
-                        {m.content}
+                }}> {m.content}
+                  
                     </span>
                     
                 </div>

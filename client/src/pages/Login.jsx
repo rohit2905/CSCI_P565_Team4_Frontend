@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 // design
 import {
   Button,
+  Divider,
   FormControl,
   IconButton,
   InputAdornment,
@@ -109,6 +110,21 @@ const Login = () => {
       setCaptchaReq(true);
     }
   };
+
+  const googleAuth = () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+      "_self"
+    );
+  };
+
+  const facebookAuth = () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/facebook/callback`,
+      "_self"
+    );
+  };
+
   return !user ? (
     <Container component="main" maxWidth="lg">
       
@@ -299,6 +315,47 @@ const Login = () => {
                 >
                   Log In
                 </Button>
+                <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                  <Divider
+                    sx={{
+                      width: '100%',
+                      height: '1px',
+                      margin: '12px 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <span style={{ padding: '0 10px', color: 'rgba(0, 0, 0, 0.54)', textTransform: 'uppercase', fontSize: '12px', backgroundColor: 'white' }}>or</span>
+                  </Divider>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                  <Button
+                    autoFocus
+                    variant="contained"
+                    onClick={googleAuth}
+                    sx={{ backgroundColor: 'white', color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.54)', '&:hover': { backgroundColor: '#f1f1f1' } }}
+                  >
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+                    Sign in
+                  </Button>
+                  <Button
+                    autoFocus
+                    variant="contained"
+                    onClick={facebookAuth}
+                    sx={{ backgroundColor: 'white', color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.54)', '&:hover': { backgroundColor: '#f1f1f1' } }}
+                  >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+                    Sign in
+                  </Button>
+                </div>
+                <Divider
+                  sx={{
+                    flexGrow: 1,
+                    height: '1px',
+                    margin: '12px 0',
+                  }}
+                />
                 <Grid container>
                   <Grid item xs>
                     <Link href="/resetpassword" variant="body2">
@@ -317,9 +374,11 @@ const Login = () => {
         </Grid>
       </Box>
     </Container>
+
   ) : (
-    <Navigate to={'../Customer'}/>
+      <Navigate to={userhome} />
   );
+
 };
 
 export default Login;

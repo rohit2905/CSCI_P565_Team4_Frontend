@@ -25,6 +25,7 @@ import { styled } from "@mui/material/styles";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import axios from 'axios';
 
 import { UserContext } from "../../../UserContext";
 import { readusers, readorders, orderupdate, adduseraccess ,getRatings} from "../../../api/user";
@@ -109,7 +110,11 @@ const ManagerHome = () => {
 	const [OrderStatus_u,setOrderStatus_u] = useState("");
 	const [Location_u,setLocation_u] = useState("");
 	const [buttoncolor,setButtoncolor] = useState("Customers");
+
 	const [ratings,setRatings]=useState([]);
+	const [drivers, setDrivers] = useState([]);
+
+
 	const fetchUsers = async () => {
 		try {
 			const { users, count, error } = await readusers({
@@ -124,6 +129,7 @@ const ManagerHome = () => {
 			}
 			// set users
 			setUsers(users);
+			console.log(users);
 			setCount(count);
 			// set snackbar
 			setSnackbarOpen(true);
@@ -174,6 +180,21 @@ const ManagerHome = () => {
 		}
 		
 	}, [page, rowsPerPage,showtable,refresh]);
+
+	useEffect(() => {
+		fetchDrivers();
+	}, []);
+
+	const fetchDrivers = async () => {
+		try {
+			const response = await axios.get(process.env.REACT_APP_API_URL +'/drivers'); 
+			console.log(response);
+			setDrivers(response.data.drivers); // Assuming the response contains an array of drivers
+		} catch (error) {
+			console.error('Error fetching drivers:', error);
+			// Handle error
+		}
+	};
 
 	const handleReadUsers = async (e) => {
 		// e.preventDefault();
@@ -567,17 +588,22 @@ const ManagerHome = () => {
 									onChange={(e) => setTrackingID_u(e.target.value)}
 								/>
 							</div>
-							<div className="form-group">
-								<TextField
-									sx={{mb:1}}
-									size="small"
-									variant="standard"
-									className="form-control"
-									label="Add Driver"
-									value={Driver_u}
-									onChange={(e) => setDriver_u(e.target.value)}
-								/>
-							</div>
+										<TextField
+											sx={{ mb: 1 }}
+											size="small"
+											variant="standard"
+											className="form-control"
+											select
+											label="Select Driver"
+											value={Driver_u}
+											onChange={(e) => setDriver_u(e.target.value)}
+										>
+											{drivers.map((driver) => (
+												<option key={driver._id} value={driver.email}>
+													{driver.username} {/* Assuming 'username' is the field that represents the driver's username */}
+												</option>
+											))}
+										</TextField>
 							<div className="form-group">
 							<FormControl variant="standard" sx={{ mb: 1}} fullWidth>
 								<InputLabel id="demo-simple-select-label">Order Status</InputLabel>

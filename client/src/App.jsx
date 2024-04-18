@@ -22,9 +22,13 @@ import OrderTracking from "./pages/OrderTrackingPage";
 import Mapview from "./pages/map";
 import ChatPage from "./pages/ChatPage";
 import Services from "./pages/Services";
+
+import AddService from "./pages/AddService";
+
 import UserProfile from "./components/UserProfile";
 import Dashboard from "./pages/Dashboard";
 import DashboardAdmin from "./pages/DashboardAdmin";
+
 
 // functions
 import { getUser } from "./api/user";
@@ -90,6 +94,9 @@ const App = () => {
 						<Route exact path="/map" element = {<Mapview/>} />
 						<Route exact path="/chats" element = {<ChatPage/>} />
 						<Route path="/services" element={<Services/>} />
+
+						<Route path="/newservice" element={<AddService/>} />
+
 						<Route path="/profile" element={<UserProfile/>} />
 						<Route path="/dashboard" element={<Dashboard/>} />
 						<Route path="/dashboard3" element={<DashboardAdmin/>} />

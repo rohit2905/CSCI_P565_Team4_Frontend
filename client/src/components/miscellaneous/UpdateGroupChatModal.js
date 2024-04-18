@@ -78,7 +78,7 @@ const style = {
           return;
         }
         
-        if (selectedChat.groupAdmin.email !== user) {
+        if (selectedChat.groupAdmin.username !== user) {
           console.log("Only admins can add users")
           return;
         }
@@ -115,8 +115,8 @@ const style = {
 
     const handleRemove = async (user1) => {
         console.log("user1::", user);
-        console.log("groupAdmin::", selectedChat.groupAdmin.email);
-        if (selectedChat.groupAdmin.email !== user ){//|| user1.email !== user) {
+        console.log("groupAdmin::", selectedChat.groupAdmin.username);
+        if (selectedChat.groupAdmin.username !== user ){//|| user1.email !== user) {
             console.log("only admins can remove someone")
             return;
           }

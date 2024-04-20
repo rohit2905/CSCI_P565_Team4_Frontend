@@ -26,6 +26,8 @@ import Services from "./pages/Services";
 import AddService from "./pages/AddService";
 
 import UserProfile from "./components/UserProfile";
+import Dashboard from "./pages/Dashboard";
+import DashboardAdmin from "./pages/DashboardAdmin";
 
 
 // functions
@@ -96,7 +98,8 @@ const App = () => {
 						<Route path="/newservice" element={<AddService/>} />
 
 						<Route path="/profile" element={<UserProfile/>} />
-
+						<Route path="/dashboard" element={<Dashboard/>} />
+						<Route path="/dashboard3" element={<DashboardAdmin/>} />
           			</Routes>
 				
 				</UserContext.Provider>

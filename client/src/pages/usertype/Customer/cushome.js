@@ -27,7 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 import { UserContext } from "../../../UserContext";
-import {readuserorders, orderupdate ,getRatings,updateRating,createRating,deleteRating} from "../../../api/user";
+import {readuserorders, orderupdate ,getRatings,updateRating,createRating} from "../../../api/user";
 //import icon from '.../public/logo512.png';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -54,7 +54,7 @@ const CustomerHome = () => {
 	const [editflag,setEditFlag]=useState(false)
 	// pagination
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
 
 	// snackbar
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -72,7 +72,7 @@ const CustomerHome = () => {
   const handleUpdateReview = async (trackingId) => {
 	try {
 	//   const { useremail } = useContext(UserContext);
-  // console.log("tfugjh,",newRatings[trackingId],newReviews[trackingId])
+  console.log("tfugjh,",newRatings[trackingId],newReviews[trackingId])
 	  const updatedRating = newRatings[trackingId] !== undefined
 		? newRatings[trackingId]
 		: ratings.find(rating => rating.tracking_id === trackingId)?.rating;
@@ -80,7 +80,7 @@ const CustomerHome = () => {
 	  const updatedReview = newReviews[trackingId] !== undefined
 		? newReviews[trackingId]
 		: ratings.find(rating => rating.tracking_id === trackingId)?.review_comment;
-		// console.log("fgbn,",updatedRating,updatedReview)
+		console.log("fgbn,",updatedRating,updatedReview)
 	  const res = await updateRating({
 		TrackingID: trackingId,
 		email: useremail,
@@ -107,13 +107,6 @@ const CustomerHome = () => {
         // setNewReview('');
 		getRatings_here();
     };
-    const handleDeleteRating = async(trackingId) => {
-    //   console.log("in handle",trackingId)
-      
-          const res = await deleteRating({ TrackingId: trackingId});
-          // setNewReview('');
-      getRatings_here();
-      };
 	useEffect(()=>{
 		console.log("")
 	},[newRatings,newReviews,editflag])
@@ -162,7 +155,7 @@ const CustomerHome = () => {
 	};
 
 	const handleChangeRowsPerPage = (e) => {
-		setRowsPerPage(parseInt(e.target.value, 10));
+		setRowsPerPage(parseInt(e.target.value, 20));
 		setPage(0);
 	};
 
@@ -195,7 +188,7 @@ const CustomerHome = () => {
 		const res = await getRatings({email: useremail,});
 			// console.log("jhfdnm,in getRatings")
 			setRatings(res);
-			// console.log("blaaaaaaaaaaaaaaaaaaaaaaaaa:",res)
+			console.log("blaaaaaaaaaaaaaaaaaaaaaaaaa:",res)
 	};
 	if(usertype == 10){
 	return (
@@ -248,7 +241,7 @@ const CustomerHome = () => {
                     value={editflag?newRatings[TrackingID]:p.rating}
 					onChange={(event) => handleRating(event.target.value,TrackingID)}
 
-                    inputProps={{ min: 0, max: 10 }} 
+                    inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
                     // disabled // To prevent editing the rating directly
                 />
             ))
@@ -258,7 +251,7 @@ const CustomerHome = () => {
                 type="number"
                 value={newRatings[TrackingID]}
                 onChange={(event) => handleRating(event.target.value,TrackingID)}
-                inputProps={{ min: 0, max: 10 }} 
+                inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
             />
             {/* <Button
                 variant="contained"
@@ -282,8 +275,8 @@ const CustomerHome = () => {
                     value={editflag?newReviews[TrackingID]:p.review_comment}
 					onChange={(event) => handleReview(event.target.value,TrackingID)}
 
-                    // inputProps={{ min: 0, max: 7 }} 
-                    // disabled 
+                    // inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
+                    // disabled // To prevent editing the rating directly
                 />
 				<Button
 						variant="contained"
@@ -296,20 +289,7 @@ const CustomerHome = () => {
 						color="primary"
 						onClick={() => handleUpdateReview(TrackingID)}>
 						Rate
-					</Button>: <Button
-						variant="contained"
-						color="primary"
-            disabled= {editflag}
-						onClick={() => handleDeleteRating(TrackingID)}>
-						Delete
-					</Button>}
-          {/* <Button
-						variant="contained"
-						color="primary"
-            disabled= {!editflag}
-						onClick={() => handleDeleteRating(TrackingID)}>
-						Delete
-					</Button> */}
+					</Button>: null}
 					
 					</div>
             ))):(<div key={index}>
@@ -317,7 +297,7 @@ const CustomerHome = () => {
 						type="text"
 						value={newReviews[TrackingID]}
 						onChange={(event) => handleReview(event.target.value,TrackingID)}
-						// inputProps={{ min: 0, max: 7 }} 
+						// inputProps={{ min: 0, max: 7 }} // Adjust as per your rating system
 					/>
 					<Button
 						variant="contained"
@@ -345,7 +325,7 @@ const CustomerHome = () => {
 									page={page}
 									rowsPerPage={rowsPerPage}
 									rowsPerPageOptions={[
-										 5,10
+										 10,20
 									]}
 									onPageChange={handleChangePage}
 									onRowsPerPageChange={handleChangeRowsPerPage}

@@ -108,7 +108,7 @@ const CustomerHome = () => {
 		getRatings_here();
     };
     const handleDeleteRating = async(trackingId) => {
-    //   console.log("in handle",trackingId)
+      console.log("in handle",trackingId)
       
           const res = await deleteRating({ TrackingId: trackingId});
           // setNewReview('');

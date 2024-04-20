@@ -70,44 +70,56 @@ const Header = () => {
 
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav ms-auto">
+                
+    {!user ? (
+        <>
+            <li className="nav-item">
+                        <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
+                    </li>
+                    <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/ordertracking">
+                    Track order
+                </Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/signup">
+                    Sign Up
+                </Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/login">
+                    Login
+                </Link>
+            </li>
+        </>
+    ) : (
+        <>
+        <li className="nav-item">
+                        <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
+                    </li>
 
-                    {!user ? (
-                        <>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/ordertracking">
-                                    Track order
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/signup">
-                                    Sign Up
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/login">
-                                    Login
-                                </Link>
-                            </li>
-                        </>
-                    ) : (
-                        <>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/services">Services</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/ordertracking">
-                                    Track order
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" style={linkStyles} to="/chats">
-                                    Chat
-                                </Link>
-                            </li>
-                            {usertype === "10" && (
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/map">
+                    Map
+                </Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/ordertracking">
+                    Track order
+                </Link>
+            </li>
+            {/* <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/order">
+                    Place order
+                </Link>
+            </li> */}
+            <li className="nav-item">
+                <Link className="nav-link" style={linkStyles} to="/chats">
+                    Chat
+                </Link>
+            </li> 
+            
+                 {usertype === "10" && (
                                 <>
 
                                     <li className="nav-item">
@@ -129,8 +141,7 @@ const Header = () => {
 
                                 </>
                             )}
-
-                            {usertype === "20" && (
+                 {usertype === "20" && (
                                 <>
 
                                     <li className="nav-item">
@@ -144,10 +155,15 @@ const Header = () => {
                                             My Orders
                                         </Link>
                                     </li>
+                                    <li className="nav-item">
+                    <Link className="nav-link" style={linkStyles} to="/dashboard">
+                        My Statistics
+                    </Link>
+                </li>
 
                                 </>
                             )}
-                            {usertype === "30" && (
+                 {usertype === "30" && (
                                 <>
 
                                     <li className="nav-item">
@@ -162,20 +178,33 @@ const Header = () => {
                                         </Link>
 
                                     </li>
-
+                                    <li className="nav-item">
+                    <Link className="nav-link" style={linkStyles} to="/dashboard3">
+                        My statistics
+                    </Link>
+                </li>
                                 </>
                             )}
-                            <li className="nav-item">
-                                <div className="dropdown">
-                                    <button className="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ background: 'transparent', border: 'none' }}>
-                                        <FaUserCircle /> {/* Profile Icon */}
-                                    </button>
-                                    <div className="dropdown-menu" aria-labelledby="profileDropdown">
-                                        <Link className="dropdown-item" to="/profile">View Profile</Link>
-                                        <span className="dropdown-item" onClick={handleLogout} style={{ cursor: "pointer" }}>Logout</span>
-                                    </div>
-                                </div>
-                            </li>
+            {/* <li className="nav-item">
+                <span
+                    className="nav-link"
+                    style={{ cursor: "pointer", ...linkStyles }}
+                    onClick={handleLogout}
+                >
+                    Logout
+                </span>
+            </li> */}
+            <li className="nav-item">
+            <div className="dropdown">
+                <button className="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ background: 'transparent', border: 'none' }}>
+                    <FaUserCircle /> {/* Profile Icon */}
+                </button>
+                <div className="dropdown-menu" aria-labelledby="profileDropdown">
+                    <Link className="dropdown-item" to="/profile">View Profile</Link>
+                    <span className="dropdown-item" onClick={handleLogout} style={{ cursor: "pointer" }}>Logout</span>
+                </div>
+            </div>           
+</li>
 
                         </>
                     )}

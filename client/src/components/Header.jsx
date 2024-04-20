@@ -121,6 +121,11 @@ const Header = () => {
                                             My Orders
                                         </Link>
                                     </li>
+                                        <li className="nav-item">
+                                        <Link className="nav-link" style={linkStyles} to="/dashboard">
+                                            My Statistics
+                                        </Link>
+                                        </li>
 
                                 </>
                             )}

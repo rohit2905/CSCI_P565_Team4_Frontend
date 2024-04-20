@@ -28,7 +28,7 @@ import Select from '@mui/material/Select';
 import axios from 'axios';
 
 import { UserContext } from "../../../UserContext";
-import { readusers, readorders, orderupdate, adduseraccess ,getRatings} from "../../../api/user";
+import { readusers, readorders, orderupdate, adduseraccess ,getAllRatings} from "../../../api/user";
 //import icon from '.../public/logo512.png';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -165,10 +165,10 @@ const ManagerHome = () => {
 	};
 	const getRatings_here= async () => {
 		// console.log("getratings home")
-		const res = await getRatings({email: useremail,});
+		const res = await getAllRatings();
 			// console.log("jhfdnm,in getRatings")
 			setRatings(res);
-			console.log(res)
+			console.log("allratings in admin",res)
 	};
 	useEffect(() => {
 		if(showtable == "4"){

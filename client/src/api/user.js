@@ -282,7 +282,27 @@ export const getRatings = async ({  email } = {}) => {
 		throw new Error(error.message);
 	}
 };
+export const getAllRatings = async ({  email } = {}) => {
+	try {
+		// console.log("in user.js",email)
 
+		const res = await fetch(
+			`${process.env.REACT_APP_API_URL}/allreviews`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+			}
+		);
+		// console.log("in user.js",res)
+
+		return await res.json();
+	} catch (error) {
+		throw new Error(error.message);
+	}
+};
 export const createRating = async ({ TrackingID, email, rating, review }) => {
     try {
         const order = { email, review, rating, tracking_id: TrackingID };

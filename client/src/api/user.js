@@ -228,7 +228,7 @@ export const readorders = async ({ page, perPage, userType } = {}) => {
 export const order_details_for_dashboard = async ({  email } = {}) => {
 	try {
 		const res = await fetch(
-			`http://localhost:8080/ordersDashboard?email=${email}`,
+			`${process.env.REACT_APP_API_URL}/ordersDashboard?email=${email}`,
 			{
 				method: "GET",
 				headers: {
@@ -246,7 +246,7 @@ export const order_details_for_dashboard = async ({  email } = {}) => {
 export const fetchOrderData_admin = async ({  email } = {}) => {
 	try {
 		const res = await fetch(
-			`http://localhost:8080/ordersDashboardAdmin`,
+			`${process.env.REACT_APP_API_URL}/ordersDashboardAdmin`,
 			{
 				method: "GET",
 				headers: {
@@ -263,10 +263,10 @@ export const fetchOrderData_admin = async ({  email } = {}) => {
 };
 export const getRatings = async ({  email } = {}) => {
 	try {
-		console.log("in user.js",email)
+		// console.log("in user.js",email)
 
 		const res = await fetch(
-			`http://localhost:8080/reviews?useremail=${email}`,
+			`${process.env.REACT_APP_API_URL}/reviews?useremail=${email}`,
 			{
 				method: "GET",
 				headers: {
@@ -275,7 +275,7 @@ export const getRatings = async ({  email } = {}) => {
 				},
 			}
 		);
-		console.log("in user.js",res)
+		// console.log("in user.js",res)
 
 		return await res.json();
 	} catch (error) {
@@ -283,11 +283,11 @@ export const getRatings = async ({  email } = {}) => {
 	}
 };
 
-export const updateRating = async ({ TrackingID, email, rating, review }) => {
+export const createRating = async ({ TrackingID, email, rating, review }) => {
     try {
         const order = { email, review, rating, tracking_id: TrackingID };
-		console.log(order,email, review, rating,TrackingID)
-        const res = await fetch(`http://localhost:8080/create-review`, {
+		// console.log(order,email, review, rating,TrackingID)
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/create-review`, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -301,6 +301,72 @@ export const updateRating = async ({ TrackingID, email, rating, review }) => {
         throw new Error(error.message);
     }
 };
+// export const updateRating = async ({ TrackingID, email, rating, review }) => {
+//     try {
+//         const order = { email, review, rating, tracking_id: TrackingID };
+// 		console.log("update",order,email, review, rating,TrackingID)
+//         const res = await fetch(`http://localhost:8080/update-review?useremail=${email}&TrackingID=${TrackingID}`, {
+//             method: "POST",
+//             credentials: "include",
+//             headers: {
+//                 Accept: "application/json",
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(order),
+//         });
+//         return await res.json();
+//     } catch (error) {
+//         throw new Error(error.message);
+//     }
+// };
+
+export const updateRating = async ({ TrackingID, email, rating, review }) => {
+	try {
+	  const order = { review, rating };
+	  
+	  const res = await fetch(
+		`${process.env.REACT_APP_API_URL}/update-review?useremail=${email}&TrackingID=${TrackingID}`,
+		{
+		  method: "PUT", // Change to PUT
+		  credentials: "include",
+		  headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		  },
+		  body: JSON.stringify(order),
+		}
+	  );
+  
+	  return await res.json();
+	} catch (error) {
+	  throw new Error(error.message);
+	}
+  };
+  
+ 
+  export const deleteRating = async ({  TrackingId } = {}) => {
+	try {
+		// console.log("in user.js",TrackingId)
+
+		const res = await fetch(
+			`${process.env.REACT_APP_API_URL}/delete-review?TrackingId=${TrackingId}`,
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+			}
+		);
+
+		return await res.json();
+	} catch (error) {
+		throw new Error(error.message);
+	}
+};
+
+
+
 
 
 export const readuserorders = async ({ page, perPage, userType, email } = {}) => {

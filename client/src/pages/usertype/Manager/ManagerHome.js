@@ -588,6 +588,9 @@ const ManagerHome = () => {
 									onChange={(e) => setTrackingID_u(e.target.value)}
 								/>
 							</div>
+										<div className="form-group">
+											<FormControl variant="standard" sx={{ mb: 1 }} fullWidth>
+												<InputLabel id="demo-simple-select-label">Select Driver</InputLabel>
 										<Select
 											sx={{ mb: 1 }}
 											size="small"
@@ -603,6 +606,8 @@ const ManagerHome = () => {
 												</MenuItem>
 											))}
 										</Select>
+											</FormControl>
+										</div>
 							<div className="form-group">
 							<FormControl variant="standard" sx={{ mb: 1}} fullWidth>
 								<InputLabel id="demo-simple-select-label">Order Status</InputLabel>

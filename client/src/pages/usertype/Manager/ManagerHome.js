@@ -588,22 +588,21 @@ const ManagerHome = () => {
 									onChange={(e) => setTrackingID_u(e.target.value)}
 								/>
 							</div>
-										<TextField
+										<Select
 											sx={{ mb: 1 }}
 											size="small"
 											variant="standard"
 											className="form-control"
-											select
 											label="Select Driver"
 											value={Driver_u}
 											onChange={(e) => setDriver_u(e.target.value)}
 										>
 											{drivers.map((driver) => (
-												<option key={driver._id} value={driver.email}>
-													{driver.username} {/* Assuming 'username' is the field that represents the driver's username */}
-												</option>
+												<MenuItem key={driver._id} value={driver.email}>
+													{driver.username}
+												</MenuItem>
 											))}
-										</TextField>
+										</Select>
 							<div className="form-group">
 							<FormControl variant="standard" sx={{ mb: 1}} fullWidth>
 								<InputLabel id="demo-simple-select-label">Order Status</InputLabel>
